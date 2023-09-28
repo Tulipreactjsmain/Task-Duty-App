@@ -2,7 +2,8 @@ import express, { json } from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import { connectToDB } from "./config/mongoDb.js";
-import authRoutes from "./routes/auth.js"
+import authRoutes from "./routes/auth.js";
+import taskRoutes from "./routes/task.js";
 
 const app = express();
 app.use(json());
@@ -11,6 +12,7 @@ config();
 app.disable("x-powered-by");
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/tasks", taskRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;
