@@ -65,8 +65,8 @@ export const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const resetToken = generateRandomToken(16);
+    console.log(resetToken);
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
-    console.log(resetTokenExpiry);
 
     const existingUser = await User.findOneAndUpdate(
       { email },
@@ -76,7 +76,7 @@ export const forgotPassword = async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ error: `User with ${email} not found ` });
     }
-
+    //This is just a test URL
     const frontendResetPasswordURL =
       "https://res.cloudinary.com/techbro/image/upload/v1694393440/cld-sample-3.jpg";
     const resetLink = `${frontendResetPasswordURL}?token=${resetToken}`;
