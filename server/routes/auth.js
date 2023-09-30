@@ -5,16 +5,16 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/auth.js";
-import passport from "../config/passportConfig.js";
+import passport from "passport";
 
 const router = express.Router();
 
 router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  "/google",
+  passport.authenticate("google", { scope: ["profile ", "email"] })
 );
 router.get(
-  "/auth/google/callback",
+  "/google/callback",
   passport.authenticate("google", { 
     successRedirect: "/dashboard",
     failureRedirect: "/login",

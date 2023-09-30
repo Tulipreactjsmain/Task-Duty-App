@@ -2,7 +2,7 @@ import { instance } from "./connect";
 
 export const loginWithGoogle = async () => {
   try {
-    const res = await instance.get("/api/v1/auth/auth/google");
+    const res = await instance.get("/auth/google");
     return res.data;
   } catch (error) {
     console.error("Error while logging in with Google:", error);

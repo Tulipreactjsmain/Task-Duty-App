@@ -1,9 +1,9 @@
-import { getUserTasks } from "../config/api";
+import { getUserTasks, loginWithGoogle } from "../config/api";
 
 export default function Home() {
   const handleGoogleLogin = async () => {
     try {
-      const response = await getUserTasks();
+      const response = await loginWithGoogle();
       // Handle the response as needed, e.g., redirect the user after successful login
       console.log("Google login response:", response);
     } catch (error) {
