@@ -14,9 +14,9 @@ router.get(
   passport.authenticate("google", { scope: ["profile ", "email"] })
 );
 router.get(
-  "/google/callback",
+  "/google/taskduty",
   passport.authenticate("google", { 
-    successRedirect: "/dashboard",
+    successRedirect: "/",
     failureRedirect: "/login",
   })
 );

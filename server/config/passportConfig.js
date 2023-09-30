@@ -21,7 +21,7 @@ passport.use(
             googleId: profile.id,
             email: profile.emails[0].value,
             username: profile.displayName,
-            profileImg: "default-image-url-here",
+            profileImg: "https://res.cloudinary.com/techbro/image/upload/v1695821188/user-profile-icon-free-vector_jqofee.jpg",
           });
 
           await user.save();
