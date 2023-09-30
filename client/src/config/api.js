@@ -13,7 +13,7 @@ export const loginWithGoogle = async () => {
 export const getUserTasks = async () => {
   const res = await instance.get("/api/v1/tasks", {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTQ2N2JmNzE1NGU0ZjA0N2QwOWEyMyIsImlhdCI6MTY5NjAzNTk3MiwiZXhwIjoxNjk2Mjk1MTcyfQ.etEnIcpSKgpz4AWgMcv0RTJsBBOWTjmxNdcrg6E--BU`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return res;
