@@ -1,8 +1,9 @@
 import User from "../models/auth.js";
 import bcrypt from "bcrypt";
 import { customError } from "../config/error.js";
-import sendResetPasswordEmail from "./email.js";
+import sendResetPasswordEmail from "../config/email.js";
 import generateToken, { generateRandomToken } from "../config/token.js";
+
 
 export const registerUser = async (req, res, next) => {
   res.status(200);
@@ -108,3 +109,4 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
