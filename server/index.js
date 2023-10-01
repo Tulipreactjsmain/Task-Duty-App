@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import { connectToDB } from "./config/mongoDb.js";
 import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/task.js";
-// import session from "express-session";
+import session from "express-session";
 import passport from "./config/passportConfig.js";
 
 const app = express();
@@ -16,15 +16,15 @@ app.use(cors({
 config();
 app.disable("x-powered-by");
 
-// app.use(
-//   session({
-//     secret: "your-secret-key",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Root, Error } from "../components";
+import { Root, Error, GoogleCallback } from "../components";
 import Home from "../pages/Home";
 export default function Routes() {
   const router = createBrowserRouter([
@@ -11,6 +11,10 @@ export default function Routes() {
         {
           path: "/",
           element: <Home/>,
+        },
+        {
+          path: "/auth/google/taskduty", 
+          element: <GoogleCallback />,
         },
       ],
     },

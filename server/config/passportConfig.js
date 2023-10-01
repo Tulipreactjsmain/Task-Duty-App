@@ -2,19 +2,27 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/auth.js";
 import { config } from "dotenv";
+import cors from "cors";
+import express  from "express";
 
+const app = express()
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 config();
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://taskduty-tmvx.onrender.com/auth/google/taskduty",
+      callbackURL: "http://localhost:5173/auth/google/taskduty",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       try {
-        let user = await User.findOne({ googleId: profile.id });
+        let user = await User.findOne({ email: profile.emails[0].value });
 
         if (!user) {
           user = new User({
@@ -37,11 +45,11 @@ passport.use(
 
 export default passport;
 
-// passport.serializeUser((user, done) => {
-//     done(null, user.id);
-//   });
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
-//   passport.deserializeUser(async (id, done) => {
-//     const user = await User.findById(id);
-//     done(null, user);
-//   });
+  passport.deserializeUser(async (id, done) => {
+    const user = await User.findById(id);
+    done(null, user);
+  });

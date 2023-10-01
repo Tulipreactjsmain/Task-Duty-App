@@ -1,14 +1,17 @@
-import { getUserTasks, loginWithGoogle } from "../config/api";
+import { getUserTasks, loginWithGoogle, retrieveGoogleUser } from "../config/api";
 
 export default function Home() {
   const handleGoogleLogin = async () => {
     try {
-      const response = await loginWithGoogle();
-      // Handle the response as needed, e.g., redirect the user after successful login
-      console.log("Google login response:", response);
+      // Authenticate the user with Google
+      const googleUser = await loginWithGoogle();
+  
+      // After successful Google authentication, you can call retrieveGoogleUser to retrieve the user's data.
+      if (googleUser) {
+        await retrieveGoogleUser();
+      }
     } catch (error) {
-      // Handle errors, e.g., show an error message to the user
-      console.error("Google login error:", error);
+      console.error("Error during Google authentication:", error);
     }
   };
   return (
