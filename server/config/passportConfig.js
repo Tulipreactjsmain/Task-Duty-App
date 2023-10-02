@@ -2,21 +2,14 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/auth.js";
 import { config } from "dotenv";
-import cors from "cors";
-import express  from "express";
 
-const app = express()
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
 config();
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5173/auth/google/taskduty",
+      callbackURL: "http://localhost:3000/auth/google/taskduty",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, done) => {

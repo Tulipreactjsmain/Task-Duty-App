@@ -2,6 +2,12 @@ import { instance } from "./connect";
 
 export const loginWithGoogle = async () => {
   try {
+    // const headers = {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+
+    // };
+
     const res = await instance.get("/auth/google", { credentials: true });
     return res.data;
   } catch (error) {
