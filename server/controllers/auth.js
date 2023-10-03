@@ -4,7 +4,6 @@ import { customError } from "../config/error.js";
 import sendResetPasswordEmail from "../config/email.js";
 import generateToken, { generateRandomToken } from "../config/token.js";
 
-
 export const registerUser = async (req, res, next) => {
   res.status(200);
   const { username, email, password, profileImg } = req.body;
@@ -32,11 +31,12 @@ export const registerUser = async (req, res, next) => {
       username: newUser.username,
       email: newUser.email,
       profileImg: newUser.profileImg,
+      createdAt: newUser.createdAt,
     };
-    const access_token = generateToken(user._id);
+    req.session.user = user;
     res
       .status(201)
-      .json({ access_token, user, msg: "User registration successfull" });
+      .json({ user, msg: "User registration successfull" });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -45,21 +45,39 @@ export const registerUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
+    const isUser = await User.findOne({ username });
+    if (!isUser) {
       return next(
         customError(404, "User with the provided username not found.")
       );
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, isUser.password);
     if (!passwordMatch) {
       return next(customError(401, "Incorrect password. Please try again."));
     }
-    const accessToken = generateToken(user._id);
-    res.status(200).json({ accessToken, user, msg: "User login successful" });
+
+    const user = {
+      _id: isUser._id,
+      username: isUser.username,
+      email: isUser.email,
+      profileImg: isUser.profileImg,
+      createdAt: isUser.createdAt,
+    };
+    req.session.user = user;
+
+    res.status(200).json({ user, msg: "User login successful" });
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+export const logoutUser = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    res.status(200).json({ msg: "User logged out successfully" });
+  });
 };
 
 export const forgotPassword = async (req, res) => {
@@ -109,4 +127,3 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-

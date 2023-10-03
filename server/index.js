@@ -5,6 +5,8 @@ import { connectToDB } from "./config/mongoDb.js";
 import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/task.js";
 import session from "express-session";
+import cookieParser from "cookie-parser";
+import { v4 as uuidv4 } from 'uuid';
 import passport from "./config/passportConfig.js";
 
 const app = express();
@@ -18,11 +20,18 @@ app.use(
 config();
 app.disable("x-powered-by");
 
+app.use(cookieParser());
 app.use(
   session({
-    secret: "your-secret-key",
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 3600000,
+    },
+    genid: (req) => {
+      return uuidv4();
+    },
   })
 );
 app.use(passport.initialize());
