@@ -7,5 +7,36 @@
 }
 
 .heroImg {
-  max-width: 418px;
+  width: 100%;
+}
+
+.carousel-inner {
+  margin: 0;
+  padding: 0;
+}
+
+.logoName {
+  font-size: 27px;
+ 
+}
+
+/* Media query for smaller screens (e.g., mobile devices) */
+@media screen and (max-width: 767px) {
+  .logoName {
+    font-size: 20px;
+  }
+}
+
+/* for medium-sized screens (e.g., tablets) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .logoName {
+    font-size: 26px;
+  }
+}
+
+/*for larger screens (e.g., desktops) */
+@media screen and (min-width: 1024px) {
+  .logoName {
+    font-size: 32px; /* Adjust this font size for larger screens */
+  }
 }
