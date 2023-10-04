@@ -6,7 +6,7 @@ import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/task.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import passport from "./config/passportConfig.js";
 
 const app = express();
@@ -28,12 +28,16 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 3600000,
+      httpOnly: true,
+      // secure: false,
+      // sameSite: "none",
     },
     genid: (req) => {
       return uuidv4();
     },
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth", authRoutes);

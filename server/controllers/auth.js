@@ -34,9 +34,7 @@ export const registerUser = async (req, res, next) => {
       createdAt: newUser.createdAt,
     };
     req.session.user = user;
-    res
-      .status(201)
-      .json({ user, msg: "User registration successfull" });
+    res.status(201).json({ user, msg: "User registration successfull" });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -65,6 +63,8 @@ export const loginUser = async (req, res, next) => {
     };
     req.session.user = user;
 
+    // res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    // res.header("Access-Control-Allow-Credentials", true);
     res.status(200).json({ user, msg: "User login successful" });
   } catch (error) {
     res.status(500).json(error);

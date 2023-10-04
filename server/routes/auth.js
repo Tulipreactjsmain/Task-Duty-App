@@ -6,6 +6,7 @@ import {
   resetPassword,
   logoutUser,
 } from "../controllers/auth.js";
+import requireAuth from "../middlewares/requireAuth.js";
 import passport from "passport";
 
 const router = express.Router();
@@ -21,9 +22,12 @@ router.get(
     failureRedirect: "/login",
   })
 );
-router.get("/dashboard", (req, res) => {
-  res.json({ user: req.user });
+router.get("/user", requireAuth, (req, res) => {
+  const user = req.session.user;
+  res.header("Access-Control-Allow-Credentials", true);
+  res.status(200).json({ user });
 });
+
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);

@@ -1,16 +1,11 @@
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
-import Account from "../components/Account";
 
 export default function Home() {
   return (
     <>
       <Row className="d-flex justify-content-between px-large px-md-5 px-3 gap-5 align-items-center pt-5">
-        {/* <div className="d-flex justify-content-between px-5 align-items-center">
-          
-        </div> */}
         <Col xs={12} lg={6} style={{ maxWidth: "535px" }}>
-          <Account/>
           <h1>
             Manage your Tasks On{" "}
             <span style={{ color: "#974FD0" }}>TaskDuty</span>
