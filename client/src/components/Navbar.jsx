@@ -1,5 +1,6 @@
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import Account from "./Account";
 import LoginModal from "./LoginModal";
 import SideMenu from "./SideMenu";
 
@@ -33,10 +34,7 @@ export default function Navbar() {
           <NavLink className="fw-500 fs-5 text-black  d-none d-md-block d-lg-block opacity">
             All Tasks
           </NavLink>
-          <NavLink>
-            <LoginModal />
-            <SideMenu />
-          </NavLink>
+          <LoginModal />
         </div>
       </div>
     </>

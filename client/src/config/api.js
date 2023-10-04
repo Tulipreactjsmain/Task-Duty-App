@@ -1,5 +1,26 @@
 import { instance } from "./connect";
 
+
+export const registerUser = async (username, email, password) => {
+  const res = await instance.post("/auth/register", {
+    username,
+    email,
+    password,
+  });
+
+  return res;
+};
+
+export const loginUser = async (username, password) => {
+  const res = await instance.post("/auth/login", {
+    username,
+    password,
+  });
+
+  return res;
+};
+
+
 export const loginWithGoogle = async () => {
   try {
     // const headers = {

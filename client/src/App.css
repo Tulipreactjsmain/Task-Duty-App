@@ -29,6 +29,14 @@
   opacity: 0.7;
 }
 
+.inputRegBox {
+  width: 100%;
+}
+.inputReg {
+  height: 45px;
+  padding-left: 10px;
+}
+
 /* for smaller screens (e.g., mobile devices) */
 @media screen and (max-width: 767px) {
   .logoName {
