@@ -29,6 +29,10 @@
   opacity: 0.7;
 }
 
+.hover:hover {
+  background-color: hsl(300, 27%, 28%) !important;
+}
+
 .inputRegBox {
   width: 100%;
 }

@@ -22,12 +22,7 @@ router.get(
     failureRedirect: "/login",
   })
 );
-router.get("/user", requireAuth, (req, res) => {
-  const user = req.session.user;
-  res.header("Access-Control-Allow-Credentials", true);
-  res.status(200).json({ user });
-});
-
+router.get("/user", requireAuth);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);

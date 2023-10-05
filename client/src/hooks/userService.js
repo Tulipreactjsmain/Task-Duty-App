@@ -1,8 +1,8 @@
-import { user } from "../config/api";
+import { getUser } from "../config/api";
 
 export const fetchUserData = async () => {
   try {
-    const res = await user();
+    const res = await getUser();
     if (res.status === 200) {
       return res.data.user;
     } else {

@@ -1,7 +1,17 @@
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
+import { NavLink } from "react-router-dom";
+import { useStore } from "../config/store";
+import toast from "react-hot-toast";
 
 export default function Home() {
+  const {userData} = useStore()
+
+  const handleClick = () => {
+    if (!userData) {
+      toast("Please log in to access your tasks.");
+    }
+  };
   return (
     <>
       <Row className="d-flex justify-content-between px-large px-md-5 px-3 gap-5 align-items-center pt-5">
@@ -16,9 +26,19 @@ export default function Home() {
             tempus duis non eget. Hendrerit tortor fermentum bibendum mi nisl
             semper porttitor. Nec accumsan.
           </p>
-          <Button className="border-0" style={{ backgroundColor: "#974FD0" }}>
-            Go to My Tasks
-          </Button>
+
+          <NavLink
+            to={userData ? `${userData.username}/tasks` : null}
+            className="text-white "
+          >
+            <Button
+              className="border-0 hover"
+              style={{ backgroundColor: "#974FD0" }}
+              onClick={handleClick}
+            >
+              Go to My Tasks
+            </Button>
+          </NavLink>
         </Col>
         <Col xs={12} lg={6} className="heroImg">
           <Carousel

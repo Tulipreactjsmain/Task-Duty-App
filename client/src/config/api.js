@@ -25,7 +25,7 @@ export const loginUser = async (username, password) => {
   return res;
 };
 
-export const user = async () => {
+export const getUser = async () => {
   const res = await instance.get("/auth/user", {
     withCredentials: true,
   });

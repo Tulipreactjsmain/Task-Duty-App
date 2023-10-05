@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -11,8 +11,9 @@ import {
 import { useForm } from "react-hook-form";
 import registerOptions from "../utils/formValidations.js";
 import { loginUser, registerUser } from "../config/api";
+import { useStore } from "../config/store.jsx";
 
-export default function LoginModal({setUserData}) {
+export default function LoginModal() {
   const [show, setShow] = useState(false);
   const [isSignup, setisSignup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export default function LoginModal({setUserData}) {
   } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  //   const { setCurrentUser } = useStore();
+  const { setUserData } = useStore();
   const from = location.state?.from || "/";
 
   const togglePassword = () => {
@@ -45,8 +46,6 @@ export default function LoginModal({setUserData}) {
         const res = await registerUser(username, email, password);
 
         if (res.status === 201) {
-          //   setCurrentUser(res.data);
-
           toast.success("Registration Successful");
           navigate(from, { replace: true });
           handleClose();
@@ -54,10 +53,11 @@ export default function LoginModal({setUserData}) {
       } else {
         const res = await loginUser(username, password);
         if (res.status === 200) {
-            const userDataResponse = await fetchUserData();
-            if (userDataResponse) {
-              setUserData(userDataResponse);
-            }
+          const userDataResponse = await fetchUserData();
+          if (userDataResponse) {
+            setUserData(userDataResponse);
+            await fetchUserData();
+          }
           toast.success("Login Successful");
           navigate(from, { replace: true });
           handleClose();
@@ -70,7 +70,6 @@ export default function LoginModal({setUserData}) {
       setLoading(false);
     }
   };
-
 
   return (
     <>
