@@ -3,31 +3,11 @@ import { Dropdown, Menu } from "antd";
 import { Image } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { Navigate, useLocation } from "react-router-dom";
-import React from "react";
+import { useStore } from "../config/store";
 import Cookies from "js-cookie";
 
 const DropdownMenu = ({ userData }) => {
-
-  const clearUserCookies = () => {
-    Cookies.remove("connect.sid", { path: "/" });
-    console.log(Cookies);
-    // location.replace("/");
-  };
-
-  const handleLogout = async () => {
-    try {
-      const response = await logOutUser();
-
-      if (response.status === 200) {
-        toast("Logout successful.");
-        clearUserCookies();
-      } else {
-        toast.error("Something went wrong");
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  const { handleLogout } = useStore();
 
   const handleMenuClick = ({ key }) => {
     if (key === "logout") {

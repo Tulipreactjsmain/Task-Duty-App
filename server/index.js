@@ -23,6 +23,7 @@ app.disable("x-powered-by");
 app.use(cookieParser());
 app.use(
   session({
+    name: 'TaskDuty.cookie',
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
