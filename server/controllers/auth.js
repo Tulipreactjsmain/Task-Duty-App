@@ -76,6 +76,7 @@ export const logoutUser = (req, res) => {
     if (err) {
       return res.status(500).json(err);
     }
+    res.clearCookie('connect.sid', { path: '/' });
     res.status(200).json({ msg: "User logged out successfully" });
   });
 };

@@ -3,6 +3,7 @@ import { Root, Error, GoogleCallback } from "../components";
 import Tasks from "../pages/Tasks";
 import Home from "../pages/Home";
 import CreateTask from "../pages/CreateTask";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 export default function Routes() {
   const router = createBrowserRouter([
@@ -17,11 +18,19 @@ export default function Routes() {
         },
         {
           path: ":username/tasks",
-          element: <Tasks />,
+          element: (
+            <ProtectedRoutes>
+              <Tasks />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: ":username/tasks/create",
-          element: <CreateTask />,
+          element: (
+            <ProtectedRoutes>
+              <CreateTask />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/auth/google/taskduty",

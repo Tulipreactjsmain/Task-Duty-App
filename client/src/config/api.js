@@ -25,6 +25,12 @@ export const loginUser = async (username, password) => {
   return res;
 };
 
+export const logOutUser = async () => {
+  const res = await instance.get("/auth/logout");
+
+  return res;
+};
+
 export const getUser = async () => {
   const res = await instance.get("/auth/user", {
     withCredentials: true,
@@ -35,10 +41,7 @@ export const getUser = async () => {
 
 export const loginWithGoogle = async () => {
   try {
-    const res = await instance.get(
-      "/auth/google",
-      { credentials: true },
-    );
+    const res = await instance.get("/auth/google", { credentials: true });
     return res.data;
   } catch (error) {
     console.error("Error while logging in with Google:", error);
@@ -60,10 +63,29 @@ export const retrieveGoogleUser = async () => {
 };
 
 export const getUserTasks = async () => {
-  const res = await instance.get("/api/v1/tasks", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const res = await instance.get("/tasks", {
+    withCredentials: true,
+  });
+  return res.data;
+};
+
+export const createNewTask = async () => {
+  const res = await instance.get("/tasks/create", {
+    withCredentials: true,
+  });
+  return res;
+};
+
+export const updateTask = async () => {
+  const res = await instance.get("/tasks/edit/:taskId", {
+    withCredentials: true,
+  });
+  return res;
+};
+
+export const deleteTask = async () => {
+  const res = await instance.get("/tasks/delete/:taskId", {
+    withCredentials: true,
   });
   return res;
 };

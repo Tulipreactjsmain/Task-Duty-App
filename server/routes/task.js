@@ -1,5 +1,4 @@
 import express from "express";
-import { verifyToken } from "../middlewares/verifyToken.js";
 import requireAuth from "../middlewares/requireAuth.js";
 
 import {
@@ -12,8 +11,8 @@ import {
 const router = express.Router();
 
 router.get("/", requireAuth, getUserTasks);
-router.post("/create", verifyToken, createNewTask);
-router.post("/edit/:taskId", verifyToken, updateTaskById);
-router.post("/delete/:taskId", verifyToken, deleteTask);
+router.post("/create", requireAuth, createNewTask);
+router.post("/edit/:taskId", requireAuth, updateTaskById);
+router.post("/delete/:taskId", requireAuth, deleteTask);
 
 export default router;

@@ -33,6 +33,10 @@
   background-color: hsl(300, 27%, 28%) !important;
 }
 
+.color {
+  color: "#974FD0" !important;
+}
+
 .inputRegBox {
   width: 100%;
 }

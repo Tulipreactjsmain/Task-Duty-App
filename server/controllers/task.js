@@ -13,7 +13,11 @@ export const createNewTask = async (req, res) => {
 
 export const getUserTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user.id });
+
+    const tasks = await Task.find({ user: req.session.user.id });
+    if (tasks.length === 0) {
+      return res.status(200).json({ message: "You have no tasks yet." });
+    }
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json(error);

@@ -2,32 +2,11 @@ import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SideMenu from "./SideMenu";
-import Loader from "../utils/Loader";
-import { fetchUserData } from "../hooks/userService";
-import { useState, useEffect } from "react";
 import { useStore } from "../config/store";
 import toast from "react-hot-toast";
+import DropdownMenu from "./DropdownMenu";
 
 export default function Navbar() {
-  // const [userData, setUserData] = useState(null);
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   async function getUserData() {
-  //     setLoading(true);
-  //     try {
-  //       const data = await fetchUserData();
-  //       setUserData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   getUserData();
-  // }, []);
-
   const { userData } = useStore();
 
   const showToast = () => {
@@ -82,23 +61,17 @@ export default function Navbar() {
 
             {userData ? (
               <>
-                <div className="position-relative">
-                  <Image
-                    roundedCircle
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      objectFit: "cover",
-                    }}
-                    src={userData?.profileImg}
-                  />
-                  <h6 className="position-absolute top-0 start-100 translate-middle fs-6">
-                    <i
-                      className="bi bi-emoji-neutral-fill"
-                      style={{ color: "#974FD0" }}
-                    ></i>
-                  </h6>
-                </div>
+                <Image
+                  className="d-md-none d-lg-none"
+                  roundedCircle
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    objectFit: "cover",
+                  }}
+                  src={userData?.profileImg}
+                />
+                <DropdownMenu userData={userData} />
               </>
             ) : (
               <LoginModal />

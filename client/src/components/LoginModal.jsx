@@ -64,7 +64,6 @@ export default function LoginModal() {
         }
       }
     } catch (error) {
-      alert(error.response.data.message);
       toast.error("invalid details");
     } finally {
       setLoading(false);
