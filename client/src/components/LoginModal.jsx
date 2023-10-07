@@ -54,8 +54,6 @@ export default function LoginModal() {
           toast.success("Registration Successful");
           navigate(from, { replace: true });
           handleClose();
-        } else if (res.status === 404) {
-          toast.error("User with the same email or username already exists.");
         }
       } else {
         const res = await loginUser(username, password);
@@ -68,14 +66,10 @@ export default function LoginModal() {
           toast.success("Login Successful");
           navigate(from, { replace: true });
           handleClose();
-        } else if (res.status === 404) {
-          toast.error("User not found.");
-        } else if (res.status === 401) {
-          ("Incorrect password. Please try again.");
         }
       }
     } catch (error) {
-      toast.error("something went wrong!");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

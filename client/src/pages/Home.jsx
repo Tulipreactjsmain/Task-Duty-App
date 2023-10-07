@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
     {/* px-md-5 */}
-      <Row className="d-flex justify-content-between customPadding gap-5 align-items-center pt-5">
+      <Row className="d-flex justify-content-between w-100 customPadding gap-5 align-items-center pt-5">
         <Col xs={12} lg={6} style={{ maxWidth: "535px" }}>
           <h1>
             Manage your Tasks On

@@ -62,7 +62,6 @@ export const retrieveGoogleUser = async () => {
     const res = await instance.get("/auth/google/taskduty", {
       credentials: true,
     });
-    console.log("resss", res);
     return res;
   } catch (error) {
     console.error("Error while logging in with Google:", error);

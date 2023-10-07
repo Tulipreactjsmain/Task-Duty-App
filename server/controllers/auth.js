@@ -15,7 +15,6 @@ export const registerUser = async (req, res, next) => {
         customError(404, "User with the same email or username already exists.")
       );
     }
-    console.log(userExists);
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -25,7 +24,7 @@ export const registerUser = async (req, res, next) => {
       password: passwordHash,
       profileImg:
         profileImg ||
-        "https://res.cloudinary.com/techbro/image/upload/v1696656521/Task%20Duty/60111_fckasm.jpg",
+        "https://res.cloudinary.com/techbro/image/upload/v1696705659/Task%20Duty/userDefault_IMG_bkhzne.jpg",
     });
 
     const user = {
@@ -86,7 +85,6 @@ export const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const resetToken = generateRandomToken(16);
-    console.log(resetToken);
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
     const existingUser = await User.findOneAndUpdate(

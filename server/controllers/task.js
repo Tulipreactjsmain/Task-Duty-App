@@ -17,6 +17,7 @@ export const createNewTask = async (req, res) => {
 };
 
 export const getUserTasks = async (req, res) => {
+ 
   try {
     const tasks = await Task.find({ user: req.session.user._id });
     if (tasks.length === 0) {

@@ -4,7 +4,7 @@
   font-family: "Lora", serif;
   font-family: "Signika Negative", sans-serif;
   text-decoration: none !important;
-  box-sizing: border-box;
+ 
 }
 
 .heroImg {
@@ -79,6 +79,7 @@
 .select {
   border-radius: 4px !important;
 }
+
 
 .form-input-tags {
   height: auto;
