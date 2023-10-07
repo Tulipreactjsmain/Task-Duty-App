@@ -46,9 +46,16 @@ export default function LoginModal() {
         const res = await registerUser(username, email, password);
 
         if (res.status === 201) {
+          const userDataResponse = await fetchUserData();
+          if (userDataResponse) {
+            setUserData(userDataResponse);
+            await fetchUserData();
+          }
           toast.success("Registration Successful");
           navigate(from, { replace: true });
           handleClose();
+        } else if (res.status === 404) {
+          toast.error("User with the same email or username already exists.");
         }
       } else {
         const res = await loginUser(username, password);
@@ -61,10 +68,14 @@ export default function LoginModal() {
           toast.success("Login Successful");
           navigate(from, { replace: true });
           handleClose();
+        } else if (res.status === 404) {
+          toast.error("User not found.");
+        } else if (res.status === 401) {
+          ("Incorrect password. Please try again.");
         }
       }
     } catch (error) {
-      toast.error("invalid details");
+      toast.error("something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -91,7 +102,7 @@ export default function LoginModal() {
               onClick={handleClose}
             />
           </div>
-          <div>
+          <div className="mx-5">
             <h1 className="text-center">
               {isSignup ? "Create account" : "Login"}
             </h1>

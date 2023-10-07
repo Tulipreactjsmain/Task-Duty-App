@@ -14,10 +14,11 @@ export default function Home() {
   };
   return (
     <>
-      <Row className="d-flex justify-content-between px-large px-md-5 px-3 gap-5 align-items-center pt-5">
+    {/* px-md-5 */}
+      <Row className="d-flex justify-content-between customPadding gap-5 align-items-center pt-5">
         <Col xs={12} lg={6} style={{ maxWidth: "535px" }}>
           <h1>
-            Manage your Tasks On{" "}
+            Manage your Tasks On
             <span style={{ color: "#974FD0" }}>TaskDuty</span>
           </h1>
           <p>

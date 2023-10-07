@@ -1,11 +1,17 @@
 import { instance } from "./connect";
 
 export const registerUser = async (username, email, password) => {
-  const res = await instance.post("/auth/register", {
-    username,
-    email,
-    password,
-  });
+  const res = await instance.post(
+    "/auth/register",
+    {
+      username,
+      email,
+      password,
+    },
+    {
+      withCredentials: true,
+    }
+  );
 
   return res;
 };
@@ -26,7 +32,9 @@ export const loginUser = async (username, password) => {
 };
 
 export const logOutUser = async () => {
-  const res = await instance.get("/auth/logout");
+  const res = await instance.get("/auth/logout", {
+    withCredentials: true,
+  });
 
   return res;
 };
@@ -69,10 +77,14 @@ export const getUserTasks = async () => {
   return res.data;
 };
 
-export const createNewTask = async () => {
-  const res = await instance.get("/tasks/create", {
-    withCredentials: true,
-  });
+export const createNewTask = async (title, description, tags) => {
+  const res = await instance.post(
+    "/tasks/create",
+    { title, description, tags },
+    {
+      withCredentials: true,
+    }
+  );
   return res;
 };
 

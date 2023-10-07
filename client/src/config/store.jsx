@@ -38,10 +38,8 @@ export const StateContext = ({ children }) => {
 
   const clearUserCookies = () => {
     Cookies.remove("TaskDuty.cookie", { path: "/" });
-    console.log(Cookies);
-    // location.replace("/");
+    location.replace("/");
   };
-
   const handleLogout = async () => {
     try {
       const response = await logOutUser();

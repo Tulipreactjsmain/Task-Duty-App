@@ -16,7 +16,7 @@ export default function Navbar() {
     <>
       <>
         <div
-          className="navDiv d-flex align-items-center justify-content-between px-3 px-large px-md-5 border-bottom"
+          className="navDiv d-flex align-items-center justify-content-between customPadding border-bottom"
           style={{ height: "93px" }}
         >
           <NavLink

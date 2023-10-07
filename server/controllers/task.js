@@ -3,7 +3,12 @@ import Task from "../models/task.js";
 export const createNewTask = async (req, res) => {
   const { title, description, tags } = req.body;
   try {
-    const task = new Task({ user: req.user.id, title, description, tags });
+    const task = new Task({
+      user: req.session.user._id,
+      title,
+      description,
+      tags,
+    });
     await task.save();
     res.status(201).json(task);
   } catch (error) {
@@ -13,8 +18,7 @@ export const createNewTask = async (req, res) => {
 
 export const getUserTasks = async (req, res) => {
   try {
-
-    const tasks = await Task.find({ user: req.session.user.id });
+    const tasks = await Task.find({ user: req.session.user._id });
     if (tasks.length === 0) {
       return res.status(200).json({ message: "You have no tasks yet." });
     }

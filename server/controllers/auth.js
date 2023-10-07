@@ -2,9 +2,10 @@ import User from "../models/auth.js";
 import bcrypt from "bcrypt";
 import { customError } from "../config/error.js";
 import sendResetPasswordEmail from "../config/email.js";
-import generateToken, { generateRandomToken } from "../config/token.js";
+import { generateRandomToken } from "../config/token.js";
 
 export const registerUser = async (req, res, next) => {
+
   res.status(200);
   const { username, email, password, profileImg } = req.body;
   try {
@@ -14,6 +15,7 @@ export const registerUser = async (req, res, next) => {
         customError(404, "User with the same email or username already exists.")
       );
     }
+    console.log(userExists);
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -23,7 +25,7 @@ export const registerUser = async (req, res, next) => {
       password: passwordHash,
       profileImg:
         profileImg ||
-        "https://res.cloudinary.com/techbro/image/upload/v1695821188/user-profile-icon-free-vector_jqofee.jpg",
+        "https://res.cloudinary.com/techbro/image/upload/v1696656521/Task%20Duty/60111_fckasm.jpg",
     });
 
     const user = {
@@ -33,6 +35,7 @@ export const registerUser = async (req, res, next) => {
       profileImg: newUser.profileImg,
       createdAt: newUser.createdAt,
     };
+ 
     req.session.user = user;
     res.status(201).json({ user, msg: "User registration successfull" });
   } catch (error) {
@@ -62,9 +65,6 @@ export const loginUser = async (req, res, next) => {
       createdAt: isUser.createdAt,
     };
     req.session.user = user;
-
-    // res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-    // res.header("Access-Control-Allow-Credentials", true);
     res.status(200).json({ user, msg: "User login successful" });
   } catch (error) {
     res.status(500).json(error);
@@ -76,8 +76,8 @@ export const logoutUser = (req, res) => {
     if (err) {
       return res.status(500).json(err);
     }
+    res.header("Access-Control-Allow-Credentials", true);
     res.clearCookie("TaskDuty.cookie", { path: "/" });
-    console.log(res);
     res.status(200).json({ msg: "User logged out successfully" });
   });
 };
