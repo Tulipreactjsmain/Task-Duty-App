@@ -4,7 +4,6 @@
   font-family: "Lora", serif;
   font-family: "Signika Negative", sans-serif;
   text-decoration: none !important;
- 
 }
 
 .heroImg {
@@ -45,6 +44,22 @@
   color: #974fd0 !important;
 }
 
+.buttonBorder {
+  border-color: #974fd0 !important;
+}
+
+.fontWeight-400 {
+  font-weight: 400 !important;
+}
+
+.taskParagraph {
+  color: #737171;
+}
+
+.row {
+  --bs-gutter-x: 0 !important;
+}
+
 .form-container {
   width: 100%;
   margin: 0 auto;
@@ -79,7 +94,6 @@
 .select {
   border-radius: 4px !important;
 }
-
 
 .form-input-tags {
   height: auto;

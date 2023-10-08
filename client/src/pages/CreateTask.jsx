@@ -40,8 +40,8 @@ export default function CreateTask() {
 
   const options = [
     {
-      label: "Current",
-      value: "current",
+      label: "Urgent",
+      value: "Urgent",
     },
     {
       label: "Important",
@@ -119,7 +119,7 @@ export default function CreateTask() {
                   render={({ field }) => (
                     <Select
                       className="select"
-                      mode="multiple"
+                      mode="single"
                       allowClear
                       style={{
                         width: "100%",

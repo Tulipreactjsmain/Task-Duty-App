@@ -78,7 +78,7 @@ export default function LoginModal() {
   return (
     <>
       <i
-        className="bi bi-person-circle fs-3 text-black d-none d-md-block d-lg-block opacity"
+        className="bi bi-person-circle fs-3 text-black d-md-block d-lg-block opacity"
         onClick={handleShow}
       ></i>
       <Modal
