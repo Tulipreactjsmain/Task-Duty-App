@@ -24,6 +24,8 @@ export default function Tasks() {
   const { userData } = useStore();
   const [userTasks, setUserTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
 
   useEffect(() => {
     const fetchUserTasks = async () => {
