@@ -87,15 +87,19 @@ export const createNewTask = async (title, description, tags) => {
   return res;
 };
 
-export const updateTask = async () => {
-  const res = await instance.get("/tasks/edit/:taskId", {
-    withCredentials: true,
-  });
+export const updateTask = async (title, description, tags) => {
+  const res = await instance.post(
+    "/tasks/edit/:taskId",
+    { title, description, tags },
+    {
+      withCredentials: true,
+    }
+  );
   return res;
 };
 
-export const deleteTask = async () => {
-  const res = await instance.get("/tasks/delete/:taskId", {
+export const deleteTask = async (taskId) => {
+  const res = await instance.delete(`/tasks/delete/${taskId}`, {
     withCredentials: true,
   });
   return res;

@@ -30,6 +30,7 @@ export default function Tasks() {
       try {
         setLoading(true);
         const tasks = await getUserTasks();
+        console.log(tasks);
         setUserTasks(tasks.reverse());
       } catch (error) {
         console.error("Error fetching user tasks:", error);
@@ -39,6 +40,21 @@ export default function Tasks() {
     };
     fetchUserTasks();
   }, []);
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      const res = await deleteTask(taskId);
+      if (res.status === 200) {
+        setUserTasks((prevTasks) =>
+          prevTasks.filter((task) => task._id !== taskId)
+        );
+      } else {
+        console.error("Failed to delete task");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
 
   const shouldRender =
     userData && location.pathname === `/${userData.username}/tasks`;
@@ -90,11 +106,14 @@ export default function Tasks() {
                               </div>
 
                               <div className="d-flex justify-content-between gap-3 align-items-center">
-                                <Button className="color text-center border-0">
+                                <Button className="color text-center border-0 hover">
                                   <BiEdit />
                                   <span className="text-white">Edit</span>
                                 </Button>
-                                <Button className="bg-body defaultColor text-center buttonBorder">
+                                <Button
+                                  className="bg-body defaultColor text-center textHover buttonBorder"
+                                  onClick={() => handleDeleteTask(task._id)}
+                                >
                                   <RiDeleteBinLine />
                                   <span>Delete</span>
                                 </Button>
@@ -102,10 +121,10 @@ export default function Tasks() {
                             </div>
                             <div className="pt-2">
                               <div
-                                className="d-flex justify-content-between font-weight-light"
+                                className="d-flex flex-column flex-md-row flex-lg-row justify-content-between font-weight-light"
                                 style={{ fontSize: "12px" }}
                               >
-                                <h1 className="fontWeight-400 fs-3">
+                                <h1 className="fontWeight-400 fs-3 order-1 order-md-0 order-lg-0">
                                   {task.title}
                                 </h1>
                                 <p className="taskParagraph opacity-75 fontWeight-400">
