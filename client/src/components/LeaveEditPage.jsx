@@ -11,10 +11,10 @@ export default function LeaveEditPage({ show, onClose, onConfirm, message }) {
           <p>{message}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" className="border-0" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={onConfirm}>
+          <Button onClick={onConfirm} className="color border-0">
             Confirm
           </Button>
         </Modal.Footer>
@@ -24,35 +24,3 @@ export default function LeaveEditPage({ show, onClose, onConfirm, message }) {
 }
 
 
-// import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
-// import CustomConfirmationModal from "./CustomConfirmationModal";
-
-// export default function UpdateTask() {
-//   const history = useHistory();
-//   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
-//   const handleConfirm = () => {
-//     // Perform the action you want to confirm (e.g., navigating away)
-//     history.push("/some-other-route");
-//   };
-
-//   return (
-//     <div>
-//       {/* Your update task content here */}
-//       <button
-//         onClick={() => setShowConfirmationModal(true)}
-//         className="btn btn-danger"
-//       >
-//         Leave Page
-//       </button>
-
-//       <CustomConfirmationModal
-//         show={showConfirmationModal}
-//         onClose={() => setShowConfirmationModal(false)}
-//         onConfirm={handleConfirm}
-//         message="Are you sure you want to leave this page? Your changes may not be saved."
-//       />
-//     </div>
-//   );
-// }

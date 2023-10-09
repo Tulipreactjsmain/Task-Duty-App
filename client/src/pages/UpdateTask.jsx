@@ -7,7 +7,6 @@ export default function UpdateTask() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const { selectedTask, isEditMode, setIsEditMode } = useStore();
-  console.log("SELECTED TASK", selectedTask);
 
     useEffect(() => {
       setIsEditMode(true);

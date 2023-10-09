@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStore } from "../config/store";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "react-bootstrap";
@@ -7,10 +7,20 @@ import { useForm, Controller } from "react-hook-form";
 import { createNewTask, updateTask } from "../config/api";
 import toast from "react-hot-toast";
 import { Select, Space } from "antd";
+import LeaveEditPage from "../components/LeaveEditPage";
 
 export default function CreateTask({}) {
   const [loading, setLoading] = useState(false);
-  const { userData, selectedTask, isEditMode, setIsEditMode } = useStore();
+  const [valuesSet, setValuesSet] = useState(false);
+
+  const {
+    userData,
+    selectedTask,
+    isEditMode,
+    setIsEditMode,
+    setShowConfirmationModal,
+    showConfirmationModal,
+  } = useStore();
   const {
     control,
     register,
@@ -29,10 +39,10 @@ export default function CreateTask({}) {
         res = await createNewTask(data.title, data.description, data.tags);
       } else {
         res = await updateTask(
-          selectedTask._id,
           data.title,
           data.description,
-          data.tags
+          data.tags,
+          selectedTask._id
         );
       }
 
@@ -73,27 +83,28 @@ export default function CreateTask({}) {
 
   const handleBackClick = () => {
     if (isEditMode) {
-      if (
-        window.confirm(
-          "You have unsaved changes. Are you sure you want to leave?"
-        )
-      ) {
-        setIsEditMode(false);
-        navigate(`/${userData?.username}/tasks`);
-      }
+      setShowConfirmationModal(true);
     } else {
       navigate(`/${userData?.username}/tasks`);
     }
   };
 
-  if (isEditMode && selectedTask) {
-    setValue("title", selectedTask.title);
-    setValue("description", selectedTask.description);
-    setValue("tags", selectedTask.tags);
-  }
+  const handleConfirmLeave = () => {
+    setShowConfirmationModal(false);
+    setIsEditMode(false);
+    navigate(`/${userData?.username}/tasks`);
+  };
+
+  useEffect(() => {
+    if (isEditMode && selectedTask && !valuesSet) {
+      setValue("title", selectedTask.title);
+      setValue("description", selectedTask.description);
+      setValue("tags", selectedTask.tags);
+    }
+  }, [isEditMode, selectedTask, valuesSet, setValue]);
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    setValue("tags", value);
   };
 
   return (
@@ -101,11 +112,17 @@ export default function CreateTask({}) {
       <div className="d-flex flex-column justify-content-center customPadding pt-5 pb-4">
         <div className="d-flex align-items-center gap-2">
           <span>
-            <Button className="p-0 m-0 border-0 bg-body" onClick={handleBackClick}>
+            <Button
+              className="p-0 m-0 border-0 bg-body"
+              onClick={handleBackClick}
+            >
               <IoIosArrowBack className="fs-1 text-black" />
             </Button>
           </span>
-          <h1 className="text-center mb-0">New Task</h1>
+
+          <h1 className="text-center mb-0">
+            {isEditMode ? "Edit Task" : "New Task"}
+          </h1>
         </div>
         <div className="form-container pt-5 pb-4">
           <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -191,12 +208,18 @@ export default function CreateTask({}) {
           </form>
         </div>
         <NavLink
-          to="#"
+          to="/"
           className="defaultColor text-center text-decoration-underline textHover"
         >
-          Back To Top
+          Back home
         </NavLink>
       </div>
+      <LeaveEditPage
+        show={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirmLeave}
+        message="You have unsaved changes. Are you sure you want to leave?"
+      />
     </>
   );
 }

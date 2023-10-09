@@ -14,6 +14,7 @@ export const StateContext = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   useEffect(() => {
     async function getUserData() {
@@ -57,7 +58,6 @@ export const StateContext = ({ children }) => {
     try {
       setLoading(true);
       const task = await getSingleTask(taskId);
-      console.log("singleeTask", task);
       setSelectedTask(task);
     } catch (error) {
       console.error("Error fetching task:", error);
@@ -65,8 +65,6 @@ export const StateContext = ({ children }) => {
       setLoading(false);
     }
   };
-
-  
 
   return (
     <Context.Provider
@@ -78,6 +76,8 @@ export const StateContext = ({ children }) => {
         selectedTask,
         isEditMode,
         setIsEditMode,
+        showConfirmationModal,
+        setShowConfirmationModal,
       }}
     >
       {children}

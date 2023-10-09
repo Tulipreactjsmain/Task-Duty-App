@@ -7,7 +7,6 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import Loader from "../utils/Loader";
 import { BsInbox } from "react-icons/bs";
-import UpdateTask from "./UpdateTask";
 
 const formatDate = (dateString) => {
   const options = {

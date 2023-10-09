@@ -1,20 +1,37 @@
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useStore } from "../config/store";
 import toast from "react-hot-toast";
+import LeaveEditPage from "../components/LeaveEditPage";
 
 export default function Home() {
-  const {userData} = useStore()
+  const {
+    userData,
+    setShowConfirmationModal,
+    showConfirmationModal,
+    setIsEditMode,
+    isEditMode,
+  } = useStore();
 
   const handleClick = () => {
     if (!userData) {
       toast("Please log in to access your tasks.");
     }
   };
+
+  const location = useLocation();
+  if (isEditMode && location.pathname === "/") {
+    setShowConfirmationModal(true);
+  }
+
+  const handleConfirmLeave = () => {
+    setShowConfirmationModal(false);
+    setIsEditMode(false);
+  };
+
   return (
     <>
-    {/* px-md-5 */}
       <Row className="d-flex justify-content-between w-100 customPadding gap-5 align-items-center pt-5">
         <Col xs={12} lg={6} style={{ maxWidth: "535px" }}>
           <h1>
@@ -69,6 +86,12 @@ export default function Home() {
           </Carousel>
         </Col>
       </Row>
+      <LeaveEditPage
+        show={showConfirmationModal}
+        onClose={handleConfirmLeave}
+        onConfirm={handleConfirmLeave}
+        message="You have unsaved changes. Are you sure you want to leave?"
+      />
     </>
   );
 }
