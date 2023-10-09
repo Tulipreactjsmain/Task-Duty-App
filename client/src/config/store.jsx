@@ -1,14 +1,10 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { fetchUserData } from "../hooks/userService";
 import Loader from "../utils/Loader";
 import { logOutUser } from "./api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { getSingleTask } from "./api";
 
 const Context = createContext();
 let initialUser = {};
@@ -16,6 +12,7 @@ let initialUser = {};
 export const StateContext = ({ children }) => {
   const [userData, setUserData] = useState(initialUser);
   const [loading, setLoading] = useState(true);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   useEffect(() => {
     async function getUserData() {
@@ -55,8 +52,29 @@ export const StateContext = ({ children }) => {
     }
   };
 
+  const handleUpdateTask = async (taskId) => {
+    try {
+      setLoading(true);
+      const task = await getSingleTask(taskId);
+      console.log("singleeTask", task);
+      setSelectedTask(task);
+    } catch (error) {
+      console.error("Error fetching task:", error);
+    } finally {
+        setLoading(false)
+    }
+  };
+
   return (
-    <Context.Provider value={{ userData, setUserData, handleLogout }}>
+    <Context.Provider
+      value={{
+        userData,
+        setUserData,
+        handleLogout,
+        handleUpdateTask,
+        selectedTask,
+      }}
+    >
       {children}
     </Context.Provider>
   );

@@ -3,6 +3,7 @@ import { Root, Error, GoogleCallback } from "../components";
 import Tasks from "../pages/Tasks";
 import Home from "../pages/Home";
 import CreateTask from "../pages/CreateTask";
+import UpdateTask from "../pages/UpdateTask";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 export default function Routes() {
@@ -29,6 +30,14 @@ export default function Routes() {
           element: (
             <ProtectedRoutes>
               <CreateTask />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: ":username/tasks/edit",
+          element: (
+            <ProtectedRoutes>
+              <UpdateTask />
             </ProtectedRoutes>
           ),
         },

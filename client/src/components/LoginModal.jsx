@@ -114,7 +114,7 @@ export default function LoginModal() {
                   {...register("username", registerOptions.username)}
                 />
                 {errors?.username?.message && (
-                  <span className="text-danger fs-6">
+                  <span className="text-danger fontWeight-400 opacity-75" style={{fontSize:"14px"}}>
                     {errors.username.message}
                   </span>
                 )}
@@ -129,7 +129,7 @@ export default function LoginModal() {
                     {...register("email", registerOptions.email)}
                   />
                   {errors?.email?.message && (
-                    <span className="text-danger fs-6">
+                    <span className="text-danger fontWeight-400 opacity-75" style={{fontSize:"14px"}}>
                       {errors.email.message}
                     </span>
                   )}
@@ -159,7 +159,7 @@ export default function LoginModal() {
                 )}
               </div>
               {errors?.password?.message && (
-                <span className="text-danger fs-6 mb-1 inputRegBox">
+                <span className="text-danger fontWeight-400 opacity-75 mb-1 inputRegBox" style={{fontSize:"14px"}}>
                   {errors.password.message}
                 </span>
               )}

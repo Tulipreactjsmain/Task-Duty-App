@@ -4,13 +4,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { createNewTask } from "../config/api";
+import { createNewTask, updateTask } from "../config/api";
 import toast from "react-hot-toast";
 import { Select, Space } from "antd";
 
 export default function CreateTask() {
   const [loading, setLoading] = useState(false);
-  const { userData } = useStore();
+  const { userData, selectedTask } = useStore();
   const {
     control,
     register,
@@ -21,20 +21,46 @@ export default function CreateTask() {
 
   const onSubmitHandler = async (data) => {
     setLoading(true);
-    console.log("taskData", data);
-    try {
-      const res = await createNewTask(data.title, data.description, data.tags);
-      if (res.status === 201) {
-        toast("Task created successfully");
-        navigate(`/${userData?.username}/tasks`);
-      } else {
+
+    if (selectedTask === null) {
+      try {
+        const res = await createNewTask(
+          data.title,
+          data.description,
+          data.tags
+        );
+        if (res.status === 201) {
+          toast("Task created successfully");
+          navigate(`/${userData?.username}/tasks`);
+        } else {
+          toast.error("Failed to create task");
+        }
+      } catch (error) {
+        console.error("Error creating task:", error);
         toast.error("Failed to create task");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error creating task:", error);
-      toast.error("Failed to create task");
-    } finally {
-      setLoading(false);
+    } else {
+      try {
+        const res = await updateTask(
+          selectedTask._id,
+          selectedTask.title,
+          selectedTask.description,
+          selectedTask.tags
+        );
+        if (res.status === 200) {
+          toast("Task updated successfully");
+          navigate(`/${userData?.username}/tasks`);
+        } else {
+          toast.error("Failed to update task");
+        }
+      } catch (error) {
+        console.error("Error updating task:", error);
+        toast.error("Failed to update task");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

@@ -17,13 +17,23 @@ export const createNewTask = async (req, res) => {
 };
 
 export const getUserTasks = async (req, res) => {
- 
   try {
     const tasks = await Task.find({ user: req.session.user._id });
     if (tasks.length === 0) {
       return res.status(200).json({ message: "You have no tasks yet." });
     }
     res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getSingleTask = async (req, res) => {
+  const taskId = req.params.taskId;
+  try {
+    const task = await Task.findOne({ _id: taskId });
+    console.log(task);
+    return res.status(200).json(task);
   } catch (error) {
     res.status(500).json(error);
   }

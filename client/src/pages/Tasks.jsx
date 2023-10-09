@@ -1,12 +1,13 @@
 import { useStore } from "../config/store";
 import { useState, useEffect } from "react";
-import { getUserTasks, updateTask, deleteTask } from "../config/api";
-import { NavLink } from "react-router-dom";
+import { getUserTasks, deleteTask } from "../config/api";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Row } from "react-bootstrap";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import Loader from "../utils/Loader";
 import { BsInbox } from "react-icons/bs";
+import UpdateTask from "./UpdateTask";
 
 const formatDate = (dateString) => {
   const options = {
@@ -21,19 +22,18 @@ const formatDate = (dateString) => {
 };
 
 export default function Tasks() {
-  const { userData } = useStore();
   const [userTasks, setUserTasks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
 
+  const { userData, handleUpdateTask } = useStore();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
         setLoading(true);
         const tasks = await getUserTasks();
-        console.log(tasks);
-        setUserTasks(tasks.reverse());
+        tasks.length > 0 ? setUserTasks(tasks.reverse()) : setUserTasks(tasks);
       } catch (error) {
         console.error("Error fetching user tasks:", error);
       } finally {
@@ -56,6 +56,11 @@ export default function Tasks() {
     } catch (error) {
       console.error("Error deleting task:", error);
     }
+  };
+
+  const handleUpdateAndNavigate = async (taskId) => {
+    await handleUpdateTask(taskId);
+    navigate(`/${userData.username}/tasks/edit`);
   };
 
   const shouldRender =
@@ -108,7 +113,12 @@ export default function Tasks() {
                               </div>
 
                               <div className="d-flex justify-content-between gap-3 align-items-center">
-                                <Button className="color text-center border-0 hover">
+                                <Button
+                                  className="color text-center border-0 hover"
+                                  onClick={() =>
+                                    handleUpdateAndNavigate(task._id)
+                                  }
+                                >
                                   <BiEdit />
                                   <span className="text-white">Edit</span>
                                 </Button>
@@ -126,21 +136,21 @@ export default function Tasks() {
                                 className="d-flex flex-column flex-md-row flex-lg-row justify-content-between font-weight-light"
                                 style={{ fontSize: "12px" }}
                               >
-                                <h1 className="fontWeight-400 fs-3 order-1 order-md-0 order-lg-0">
+                                <h1 className="fontWeight-400 fs-5 order-1 order-md-0 order-lg-0">
                                   {task.title}
                                 </h1>
-                                <p className="taskParagraph opacity-75 fontWeight-400">
-                                  Last updated: {formatDate(task.updatedAt)}
+                                <p className="taskParagraph opacity-50 fontWeight-400">
+                                  Updated: {formatDate(task.updatedAt)}
                                 </p>
                               </div>
                               <p className="taskParagraph fontWeight-400">
                                 {task.description}
                               </p>
                               <p
-                                className="taskParagraph fontWeight-400 opacity-75"
+                                className="taskParagraph fontWeight-400 opacity-50"
                                 style={{ fontSize: "12px" }}
                               >
-                                Created at: {formatDate(task.createdAt)}
+                                Created: {formatDate(task.createdAt)}
                               </p>
                             </div>
                           </div>
