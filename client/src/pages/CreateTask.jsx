@@ -8,12 +8,13 @@ import { createNewTask, updateTask } from "../config/api";
 import toast from "react-hot-toast";
 import { Select, Space } from "antd";
 
-export default function CreateTask() {
+export default function CreateTask({}) {
   const [loading, setLoading] = useState(false);
-  const { userData, selectedTask } = useStore();
+  const { userData, selectedTask, isEditMode, setIsEditMode } = useStore();
   const {
     control,
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -22,45 +23,40 @@ export default function CreateTask() {
   const onSubmitHandler = async (data) => {
     setLoading(true);
 
-    if (selectedTask === null) {
-      try {
-        const res = await createNewTask(
+    try {
+      let res;
+      if (!isEditMode) {
+        res = await createNewTask(data.title, data.description, data.tags);
+      } else {
+        res = await updateTask(
+          selectedTask._id,
           data.title,
           data.description,
           data.tags
         );
-        if (res.status === 201) {
-          toast("Task created successfully");
-          navigate(`/${userData?.username}/tasks`);
-        } else {
-          toast.error("Failed to create task");
-        }
-      } catch (error) {
-        console.error("Error creating task:", error);
-        toast.error("Failed to create task");
-      } finally {
-        setLoading(false);
       }
-    } else {
-      try {
-        const res = await updateTask(
-          selectedTask._id,
-          selectedTask.title,
-          selectedTask.description,
-          selectedTask.tags
+
+      if (res.status === 201 && !isEditMode) {
+        toast("Task created successfully");
+        navigate(`/${userData?.username}/tasks`);
+      } else if (res.status === 200 && isEditMode) {
+        toast("Task updated successfully");
+        navigate(`/${userData?.username}/tasks`);
+      } else {
+        toast.error(
+          isEditMode ? "Failed to update task" : "Failed to create task"
         );
-        if (res.status === 200) {
-          toast("Task updated successfully");
-          navigate(`/${userData?.username}/tasks`);
-        } else {
-          toast.error("Failed to update task");
-        }
-      } catch (error) {
-        console.error("Error updating task:", error);
-        toast.error("Failed to update task");
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      console.error(
+        isEditMode ? "Error updating task:" : "Error creating task:",
+        error
+      );
+      toast.error(
+        isEditMode ? "Failed to update task" : "Failed to create task"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,6 +71,27 @@ export default function CreateTask() {
     },
   ];
 
+  const handleBackClick = () => {
+    if (isEditMode) {
+      if (
+        window.confirm(
+          "You have unsaved changes. Are you sure you want to leave?"
+        )
+      ) {
+        setIsEditMode(false);
+        navigate(`/${userData?.username}/tasks`);
+      }
+    } else {
+      navigate(`/${userData?.username}/tasks`);
+    }
+  };
+
+  if (isEditMode && selectedTask) {
+    setValue("title", selectedTask.title);
+    setValue("description", selectedTask.description);
+    setValue("tags", selectedTask.tags);
+  }
+
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
@@ -84,9 +101,9 @@ export default function CreateTask() {
       <div className="d-flex flex-column justify-content-center customPadding pt-5 pb-4">
         <div className="d-flex align-items-center gap-2">
           <span>
-            <NavLink to={`/${userData?.username}/tasks`}>
+            <Button className="p-0 m-0 border-0 bg-body" onClick={handleBackClick}>
               <IoIosArrowBack className="fs-1 text-black" />
-            </NavLink>
+            </Button>
           </span>
           <h1 className="text-center mb-0">New Task</h1>
         </div>
@@ -137,7 +154,6 @@ export default function CreateTask() {
                 }}
                 direction="vertical"
               >
-                {/* Use Controller to wrap the Select component */}
                 <Controller
                   name="tags"
                   control={control}

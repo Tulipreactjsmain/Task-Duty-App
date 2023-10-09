@@ -13,6 +13,7 @@ export const StateContext = ({ children }) => {
   const [userData, setUserData] = useState(initialUser);
   const [loading, setLoading] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     async function getUserData() {
@@ -61,9 +62,11 @@ export const StateContext = ({ children }) => {
     } catch (error) {
       console.error("Error fetching task:", error);
     } finally {
-        setLoading(false)
+      setLoading(false);
     }
   };
+
+  
 
   return (
     <Context.Provider
@@ -73,6 +76,8 @@ export const StateContext = ({ children }) => {
         handleLogout,
         handleUpdateTask,
         selectedTask,
+        isEditMode,
+        setIsEditMode,
       }}
     >
       {children}

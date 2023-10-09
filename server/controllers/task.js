@@ -32,7 +32,6 @@ export const getSingleTask = async (req, res) => {
   const taskId = req.params.taskId;
   try {
     const task = await Task.findOne({ _id: taskId });
-    console.log(task);
     return res.status(200).json(task);
   } catch (error) {
     res.status(500).json(error);

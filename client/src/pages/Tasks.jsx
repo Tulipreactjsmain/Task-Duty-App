@@ -25,13 +25,14 @@ export default function Tasks() {
   const [userTasks, setUserTasks] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { userData, handleUpdateTask } = useStore();
+  const { userData, handleUpdateTask, setIsEditMode } = useStore();
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
         setLoading(true);
+        setIsEditMode(false)
         const tasks = await getUserTasks();
         tasks.length > 0 ? setUserTasks(tasks.reverse()) : setUserTasks(tasks);
       } catch (error) {
