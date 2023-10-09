@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import DropdownMenu from "./DropdownMenu";
 
 export default function Navbar() {
-  const { userData } = useStore();
+  const { userData, isEditMode } = useStore();
 
   const showToast = () => {
     toast("Please log in to access this feature.");
@@ -36,17 +36,19 @@ export default function Navbar() {
             </span>
           </NavLink>
           <div className="d-flex gap-4 justify-content-center align-items-center">
-            <NavLink
-              to={userData ? `${userData.username}/tasks/create` : null}
-              className="fw-500 fs-5 text-black d-none d-md-block d-lg-block opacity"
-              onClick={() => {
-                if (!userData) {
-                  showToast();
-                }
-              }}
-            >
-              New Task
-            </NavLink>
+            {!isEditMode && (
+              <NavLink
+                to={userData ? `${userData.username}/tasks/create` : null}
+                className="fw-500 fs-5 text-black d-none d-md-block d-lg-block opacity"
+                onClick={() => {
+                  if (!userData) {
+                    showToast();
+                  }
+                }}
+              >
+                New Task
+              </NavLink>
+            )}
             <NavLink
               to={userData ? `${userData.username}/tasks` : null}
               className="fw-500 fs-5 text-black d-none d-md-block d-lg-block opacity"

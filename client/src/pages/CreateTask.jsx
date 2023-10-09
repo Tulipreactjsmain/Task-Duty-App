@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useStore } from "../config/store";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { createNewTask, updateTask } from "../config/api";
 import toast from "react-hot-toast";
@@ -28,7 +28,10 @@ export default function CreateTask({}) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  
 
   const onSubmitHandler = async (data) => {
     setLoading(true);
@@ -79,6 +82,10 @@ export default function CreateTask({}) {
       label: "Important",
       value: "important",
     },
+    {
+        label: "None",
+        value: "none",
+      },
   ];
 
   const handleBackClick = () => {
