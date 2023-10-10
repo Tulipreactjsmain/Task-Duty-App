@@ -69,8 +69,7 @@ export const forgotPassword = async (email) => {
 };
 
 export const resetPassword = async (token, newPassword) => {
-  const res = await instance.post("/auth/reset-password", {
-    token,
+  const res = await instance.post(`/auth/reset-password/${token}`, {
     newPassword,
   });
 

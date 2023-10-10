@@ -75,11 +75,13 @@ export const updateUser = async (req, res) => {
     const userId = req.session.user._id;
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
-      _id: { $ne: userId }, 
+      _id: { $ne: userId },
     });
 
     if (existingUser) {
-      return res.status(400).json({ error: "User with the same email or username already exists." });
+      return res.status(400).json({
+        error: "User with the same email or username already exists.",
+      });
     }
 
     const updateObject = {
@@ -116,7 +118,6 @@ export const updateUser = async (req, res) => {
   }
 };
 
-
 export const logoutUser = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -134,7 +135,7 @@ export const forgotPassword = async (req, res) => {
     const resetToken = generateRandomToken(16);
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
-   const resetPasswordURL = process.env.RESET_PASSWORD_URL;
+    const resetPasswordURL = process.env.RESET_PASSWORD_URL;
     const existingUser = await User.findOneAndUpdate(
       { email },
       { resetToken, resetTokenExpiry },
@@ -153,13 +154,15 @@ export const forgotPassword = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  const { token, newPassword } = req.body;
+  const { token } = req.params;
+  const { newPassword } = req.body;
   try {
     const user = await User.findOne({ resetToken: token });
 
     if (!user || user.resetTokenExpiry < Date.now()) {
       return res.status(400).json({ error: "Invalid or expired token" });
     }
+
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(newPassword, salt);
 
@@ -167,6 +170,7 @@ export const resetPassword = async (req, res) => {
     user.resetToken = undefined;
     user.resetTokenExpiry = undefined;
     await user.save();
+
     res.status(200).json({ message: "Password successfully reset" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });

@@ -14,7 +14,6 @@ import {
   loginUser,
   registerUser,
   forgotPassword,
-  resetPassword,
 } from "../config/api";
 import { useStore } from "../config/store.jsx";
 

@@ -34,6 +34,6 @@ router.post("/login", loginUser);
 router.post("/update", requireAuth, updateUser);
 router.get("/logout", logoutUser);
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password/:token", resetPassword);
 
 export default router;

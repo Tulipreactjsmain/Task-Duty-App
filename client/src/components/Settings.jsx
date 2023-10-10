@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { updateUser } from "../config/api";
 import { BsCameraFill } from "react-icons/bs";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loader from "../utils/Loader";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import registerOptions from "../utils/formValidations";
@@ -24,13 +25,14 @@ export default function Settings({ show, onHide }) {
     setPasswordShown(!passwordShown);
   };
 
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       const profile = data;
       const updatedUserData = await updateUser(profile);
-      console.log("uodTedprof", updatedUserData);
       setUserData(updatedUserData);
+      navigate("/");
       setShowSettingsModal(false);
     } catch (error) {
     } finally {
@@ -38,6 +40,7 @@ export default function Settings({ show, onHide }) {
     }
   };
 
+  console.log("userData", userData);
   return (
     <>
       {loading ? (
@@ -71,7 +74,7 @@ export default function Settings({ show, onHide }) {
                         />
                         {isCameraIconVisible && (
                           <label
-                            htmlFor="ProfileImg"
+                            htmlFor="profileImg"
                             className="rounded-circle position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
                             style={{
                               background: "rgba(0, 0, 0, 0.6)",
