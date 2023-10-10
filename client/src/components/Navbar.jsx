@@ -1,17 +1,40 @@
-import { Image } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { Button, Image } from "react-bootstrap";
+import { NavLink, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SideMenu from "./SideMenu";
 import { useStore } from "../config/store";
 import toast from "react-hot-toast";
 import DropdownMenu from "./DropdownMenu";
+import LeaveEditPage from "./LeaveEditPage";
 
 export default function Navbar() {
-  const { userData, isEditMode } = useStore();
+  const {
+    userData,
+    isEditMode,
+    setIsEditMode,
+    setShowConfirmationModal,
+    showConfirmationModal,
+  } = useStore();
 
+  const navigate = useNavigate();
   const showToast = () => {
     toast("Please log in to access this feature.");
   };
+
+  const handleClick = () => {
+    if (isEditMode) {
+      setShowConfirmationModal(true);
+    } else {
+      navigate("/");
+    }
+  };
+
+  const handleConfirmLeave = () => {
+    setShowConfirmationModal(false);
+    setIsEditMode(false);
+    navigate("/");
+  };
+
   return (
     <>
       <>
@@ -19,9 +42,9 @@ export default function Navbar() {
           className="navDiv d-flex align-items-center justify-content-between customPadding border-bottom"
           style={{ height: "93px" }}
         >
-          <NavLink
-            to="/"
-            className="d-flex gap-2 justify-content-center align-items-center "
+          <Button
+            onClick={handleClick}
+            className="d-flex gap-2 justify-content-center bg-body border-0 align-items-center "
           >
             <Image
               className="logo"
@@ -34,7 +57,7 @@ export default function Navbar() {
             >
               TaskDuty
             </span>
-          </NavLink>
+          </Button>
           <div className="d-flex gap-4 justify-content-center align-items-center">
             {!isEditMode && (
               <NavLink
@@ -81,6 +104,12 @@ export default function Navbar() {
             <SideMenu />
           </div>
         </div>
+        <LeaveEditPage
+          show={showConfirmationModal}
+          onClose={handleConfirmLeave}
+          onConfirm={handleConfirmLeave}
+          message="You have unsaved changes. Are you sure you want to leave?"
+        />
       </>
     </>
   );

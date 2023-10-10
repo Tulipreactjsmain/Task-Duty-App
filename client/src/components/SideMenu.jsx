@@ -6,13 +6,24 @@ import { NavLink } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlinePoweroff } from "react-icons/ai";
+import Settings from "./Settings";
 
 export default function SideMenu({ name, ...props }) {
   const [show, setShow] = useState(false);
+  const { userData, handleLogout, setShowSettingsModal, showSettingsModal } =
+    useStore();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowSettingsModal(false);
+  };
+
   const handleShow = () => setShow(true);
-  const { userData, handleLogout } = useStore();
+  
+  const handleSettingsClick = () => {
+    setShowSettingsModal(true);
+  };
+
   return (
     <>
       {userData && (
@@ -26,33 +37,33 @@ export default function SideMenu({ name, ...props }) {
         onHide={handleClose}
         placement="end"
         {...props}
-        style={{
-        }}
+        style={{}}
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Manage</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className="d-flex flex-column gap-3 text-black">
-          <div className="d-flex justify-content-between align-items-center">
-            <NavLink className="text-black" href="/profile">
-              Profile
-            </NavLink>
-            <CgProfile className="fs-4" />
+          <div>
+            <Button
+              className="text-black w-100 m-0 px-0 bg-body border-0 d-flex justify-content-between align-items-center"
+              onClick={handleSettingsClick}
+            >
+              <div className=""> Settings</div>
+              <FiSettings className="fs-4" />
+            </Button>
           </div>
           <div className="d-flex justify-content-between align-items-center">
-            <NavLink className="text-black" href="/settings">
-              Settings
-            </NavLink>
-            <FiSettings className="fs-4" />
-          </div>
-          <div className="d-flex justify-content-between align-items-center">
-            <NavLink className="text-black" href="/logout">
-              Logout
-            </NavLink>
-            <AiOutlinePoweroff className="fs-4" />
+            <Button
+              onClick={() => handleLogout()}
+              className="text-black w-100 m-0 px-0 bg-body border-0 d-flex justify-content-between align-items-center"
+            >
+              <div>Logout</div>
+              <AiOutlinePoweroff className="fs-4" />
+            </Button>
           </div>
         </Offcanvas.Body>
       </Offcanvas>
+      <Settings show={showSettingsModal} onHide={handleClose} />
     </>
   );
 }

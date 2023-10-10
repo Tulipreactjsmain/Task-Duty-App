@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useStore } from "../config/store";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "react-bootstrap";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { createNewTask, updateTask } from "../config/api";
 import toast from "react-hot-toast";
@@ -30,21 +30,34 @@ export default function CreateTask({}) {
   } = useForm();
 
   const navigate = useNavigate();
-  const location = useLocation();
-  
 
   const onSubmitHandler = async (data) => {
     setLoading(true);
 
     try {
       let res;
+      const requestData = {
+        title: data.title,
+        description: data.description,
+      };
+
+      if (data.tags && data.tags !== "none") {
+        requestData.tags = data.tags;
+      } else {
+        requestData.tags = [];
+      }
+
       if (!isEditMode) {
-        res = await createNewTask(data.title, data.description, data.tags);
+        res = await createNewTask(
+          requestData.title,
+          requestData.description,
+          requestData.tags
+        );
       } else {
         res = await updateTask(
-          data.title,
-          data.description,
-          data.tags,
+          requestData.title,
+          requestData.description,
+          requestData.tags,
           selectedTask._id
         );
       }
@@ -83,10 +96,12 @@ export default function CreateTask({}) {
       value: "important",
     },
     {
-        label: "None",
-        value: "none",
-      },
+      label: "none",
+      value: [],
+    },
   ];
+
+
 
   const handleBackClick = () => {
     if (isEditMode) {
@@ -214,12 +229,15 @@ export default function CreateTask({}) {
             </Button>
           </form>
         </div>
-        <NavLink
-          to="/"
-          className="defaultColor text-center text-decoration-underline textHover"
+        <div className="d-flex w-100 justify-content-center">
+        <Button
+          onClick={() => setShowConfirmationModal(true)}
+          className="defaultColor bg-body border-0 w-25 text-center text-decoration-underline textHover"
         >
-          Back home
-        </NavLink>
+          Back to Tasks
+        </Button>
+        </div>
+        
       </div>
       <LeaveEditPage
         show={showConfirmationModal}

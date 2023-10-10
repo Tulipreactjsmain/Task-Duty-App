@@ -10,7 +10,12 @@ import {
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import registerOptions from "../utils/formValidations.js";
-import { loginUser, registerUser } from "../config/api";
+import {
+  loginUser,
+  registerUser,
+  forgotPassword,
+  resetPassword,
+} from "../config/api";
 import { useStore } from "../config/store.jsx";
 
 export default function LoginModal() {
@@ -18,10 +23,17 @@ export default function LoginModal() {
   const [isSignup, setisSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [passwordShown, setpasswordShown] = useState(false);
+  const [resetPasswordMode, setResetPasswordMode] = useState(false);
 
   const switchMode = () => {
     setisSignup(!isSignup);
+    setResetPasswordMode(false);
   };
+
+  const switchToResetPasswordMode = () => {
+    setResetPasswordMode(true);
+  };
+
   const {
     register,
     handleSubmit,
@@ -42,30 +54,34 @@ export default function LoginModal() {
   const onSubmitHandler = async ({ username, email, password }) => {
     setLoading(true);
     try {
-      if (isSignup) {
-        const res = await registerUser(username, email, password);
-
-        if (res.status === 201) {
-          const userDataResponse = await fetchUserData();
-          if (userDataResponse) {
-            setUserData(userDataResponse);
-            await fetchUserData();
-          }
-          toast.success("Registration Successful");
-          navigate(from, { replace: true });
-          handleClose();
-        }
+      if (resetPasswordMode) {
+        await forgotPassword(email);
+        toast.success("Reset instructions sent to your email");
+        handleClose();
       } else {
-        const res = await loginUser(username, password);
-        if (res.status === 200) {
-          const userDataResponse = await fetchUserData();
-          if (userDataResponse) {
-            setUserData(userDataResponse);
-            await fetchUserData();
+        if (isSignup) {
+          const res = await registerUser(username, email, password);
+
+          if (res.status === 201) {
+            const userDataResponse = await fetchUserData();
+            if (userDataResponse) {
+              setUserData(userDataResponse);
+            }
+            toast.success("Registration Successful");
+            navigate(from, { replace: true });
+            handleClose();
           }
-          toast.success("Login Successful");
-          navigate(from, { replace: true });
-          handleClose();
+        } else {
+          const res = await loginUser(username, password);
+          if (res.status === 200) {
+            const userDataResponse = await fetchUserData();
+            if (userDataResponse) {
+              setUserData(userDataResponse);
+            }
+            toast.success("Login Successful");
+            navigate(from, { replace: true });
+            handleClose();
+          }
         }
       }
     } catch (error) {
@@ -98,87 +114,138 @@ export default function LoginModal() {
           </div>
           <div className="mx-5">
             <h1 className="text-center">
-              {isSignup ? "Create account" : "Login"}
+              {isSignup
+                ? "Create account"
+                : resetPasswordMode
+                ? "Reset Password"
+                : "Login"}
             </h1>
             <form
               className="d-flex flex-column align-items-center w-100"
               onSubmit={handleSubmit(onSubmitHandler)}
             >
-              <div className="mb-2 inputRegBox">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  id="username"
-                  autoFocus
-                  className="w-100 mb-0 inputReg"
-                  {...register("username", registerOptions.username)}
-                />
-                {errors?.username?.message && (
-                  <span className="text-danger fontWeight-400 opacity-75" style={{fontSize:"14px"}}>
-                    {errors.username.message}
-                  </span>
-                )}
-              </div>
-              {isSignup && (
+              {resetPasswordMode ? (
                 <div className="mb-2 inputRegBox">
                   <input
                     type="text"
                     placeholder="Email"
                     id="email"
+                    autoFocus
                     className="w-100 mb-0 inputReg"
                     {...register("email", registerOptions.email)}
                   />
                   {errors?.email?.message && (
-                    <span className="text-danger fontWeight-400 opacity-75" style={{fontSize:"14px"}}>
+                    <span
+                      className="text-danger fontWeight-400 opacity-75"
+                      style={{ fontSize: "14px" }}
+                    >
                       {errors.email.message}
                     </span>
                   )}
                 </div>
+              ) : (
+                <>
+                  <div className="mb-2 inputRegBox">
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      id="username"
+                      autoFocus
+                      className="w-100 mb-0 inputReg"
+                      {...register("username", registerOptions.username)}
+                    />
+                    {errors?.username?.message && (
+                      <span
+                        className="text-danger fontWeight-400 opacity-75"
+                        style={{ fontSize: "14px" }}
+                      >
+                        {errors.username.message}
+                      </span>
+                    )}
+                  </div>
+                  {isSignup && (
+                    <div className="mb-2 inputRegBox">
+                      <input
+                        type="text"
+                        placeholder="Email"
+                        id="email"
+                        className="w-100 mb-0 inputReg"
+                        {...register("email", registerOptions.email)}
+                      />
+                      {errors?.email?.message && (
+                        <span
+                          className="text-danger fontWeight-400 opacity-75"
+                          style={{ fontSize: "14px" }}
+                        >
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
 
-              <div className=" mb-2 inputRegBox position-relative">
-                <input
-                  type={passwordShown ? "text" : "password"}
-                  placeholder="password"
-                  id="password"
-                  className="w-100 inputReg mb-0"
-                  {...register("password", registerOptions.password)}
-                />
-                {passwordShown ? (
-                  <AiFillEye
-                    className="position-absolute end-0 translate-middle"
-                    style={{ top: "50%", cursor: "pointer" }}
-                    onClick={togglePassword}
+              {!resetPasswordMode && (
+                <div className=" mb-2 inputRegBox position-relative">
+                  <input
+                    type={passwordShown ? "text" : "password"}
+                    placeholder="password"
+                    id="password"
+                    className="w-100 inputReg mb-0"
+                    {...register("password", registerOptions.password)}
                   />
-                ) : (
-                  <AiOutlineEyeInvisible
-                    className="position-absolute end-0 translate-middle"
-                    style={{ top: "50%", cursor: "pointer" }}
-                    onClick={togglePassword}
-                  />
-                )}
-              </div>
+                  {passwordShown ? (
+                    <AiFillEye
+                      className="position-absolute end-0 translate-middle"
+                      style={{ top: "50%", cursor: "pointer" }}
+                      onClick={togglePassword}
+                    />
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      className="position-absolute end-0 translate-middle"
+                      style={{ top: "50%", cursor: "pointer" }}
+                      onClick={togglePassword}
+                    />
+                  )}
+                </div>
+              )}
               {errors?.password?.message && (
-                <span className="text-danger fontWeight-400 opacity-75 mb-1 inputRegBox" style={{fontSize:"14px"}}>
+                <span
+                  className="text-danger fontWeight-400 opacity-75 mb-1 inputRegBox"
+                  style={{ fontSize: "14px" }}
+                >
                   {errors.password.message}
                 </span>
               )}
               <Button
-                variant="dark"
                 type="submit"
                 size="lg"
-                className="my-4 rounded-0 inputRegBox"
+                className="my-4 rounded-3 color hover border-0 inputRegBox"
               >
                 {loading ? (
                   <Spinner animation="border" size="sm"></Spinner>
                 ) : isSignup ? (
                   "Create"
+                ) : resetPasswordMode ? (
+                  "Reset Password"
                 ) : (
                   "Sign in"
                 )}
               </Button>
+              {!resetPasswordMode &&
+                !isSignup && ( // Display "Forgot Password?" link only in login mode
+                  <p
+                    className="text-secondary-subtle textHover mb-2"
+                    type="button"
+                    onClick={switchToResetPasswordMode}
+                    c
+                  >
+                    <span>Forgot password? </span>
+                  </p>
+                )}
+
               {isSignup ? (
-                <p className="" type="button" onClick={switchMode}>
+                <p className="text-center" type="button" onClick={switchMode}>
                   <span>Already have an account? </span>
                   <span className="text-decoration-underline pt-4">
                     Sign in here

@@ -1,26 +1,25 @@
 import { useStore } from "../config/store";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CreateTask from "./CreateTask";
-import LeaveEditPage from "../components/LeaveEditPage";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateTask() {
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const { selectedTask, isEditMode, setIsEditMode, userData } = useStore();
+  const navigate = useNavigate()
 
-  const { selectedTask, isEditMode, setIsEditMode } = useStore();
-
-    useEffect(() => {
-      setIsEditMode(true);
-    }, []);
+  useEffect(() => {
+    setIsEditMode(true);
+  }, []);
 
   return (
     <>
       {selectedTask ? (
         <>
           <CreateTask />
-          
         </>
       ) : (
-        <>Go back</>
+        <>{location.replace(`/${userData.username}/tasks`)}</>
+        // <>{navigate(`/${userData.username}/tasks`)}</>
       )}
     </>
   );

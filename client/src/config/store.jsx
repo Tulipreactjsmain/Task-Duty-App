@@ -5,6 +5,7 @@ import { logOutUser } from "./api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { getSingleTask } from "./api";
+import { useLocation } from "react-router-dom";
 
 const Context = createContext();
 let initialUser = {};
@@ -15,6 +16,7 @@ export const StateContext = ({ children }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   useEffect(() => {
     async function getUserData() {
@@ -78,6 +80,10 @@ export const StateContext = ({ children }) => {
         setIsEditMode,
         showConfirmationModal,
         setShowConfirmationModal,
+        showSettingsModal,
+        setShowSettingsModal,
+        loading,
+        setLoading
       }}
     >
       {children}

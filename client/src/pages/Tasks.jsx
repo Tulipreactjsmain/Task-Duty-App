@@ -99,7 +99,7 @@ export default function Tasks() {
                                     <h5
                                       key={index}
                                       className={
-                                        tag === "important"
+                                        tag === "important" 
                                           ? "p-0 m-0 text-center text-success opacity-75 fontWeight-400 fs-6"
                                           : "p-0 m-0 text-center text-danger opacity-75 fontWeight-400 fs-6"
                                       }

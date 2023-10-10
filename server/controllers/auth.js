@@ -5,7 +5,6 @@ import sendResetPasswordEmail from "../config/email.js";
 import { generateRandomToken } from "../config/token.js";
 
 export const registerUser = async (req, res, next) => {
-
   res.status(200);
   const { username, email, password, profileImg } = req.body;
   try {
@@ -34,7 +33,7 @@ export const registerUser = async (req, res, next) => {
       profileImg: newUser.profileImg,
       createdAt: newUser.createdAt,
     };
- 
+
     req.session.user = user;
     res.status(201).json({ user, msg: "User registration successfull" });
   } catch (error) {
@@ -70,6 +69,54 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
+export const updateUser = async (req, res) => {
+  const { username, email, password, profileImg } = req.body.profile;
+  try {
+    const userId = req.session.user._id;
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }],
+      _id: { $ne: userId }, 
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "User with the same email or username already exists." });
+    }
+
+    const updateObject = {
+      username: username || req.session.user.username,
+      email: email || req.session.user.email,
+      profileImg: profileImg || req.session.user.profileImg,
+      ...(password && {
+        password: await bcrypt.hash(password, 10),
+      }),
+    };
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: updateObject },
+      { new: true }
+    );
+
+    console.log("Updated User:", updatedUser);
+    if (updatedUser) {
+      const user = {
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        profileImg: updatedUser.profileImg,
+      };
+      req.session.user = user;
+
+      res.status(201).json({ user, msg: "User profile updated" });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 export const logoutUser = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -87,6 +134,7 @@ export const forgotPassword = async (req, res) => {
     const resetToken = generateRandomToken(16);
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
+   const resetPasswordURL = process.env.RESET_PASSWORD_URL;
     const existingUser = await User.findOneAndUpdate(
       { email },
       { resetToken, resetTokenExpiry },
@@ -95,10 +143,7 @@ export const forgotPassword = async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ error: `User with ${email} not found ` });
     }
-    //This is just a test URL
-    const frontendResetPasswordURL =
-      "https://res.cloudinary.com/techbro/image/upload/v1694393440/cld-sample-3.jpg";
-    const resetLink = `${frontendResetPasswordURL}?token=${resetToken}`;
+    const resetLink = `${resetPasswordURL}?token=${resetToken}`;
     sendResetPasswordEmail(email, resetLink);
 
     res.status(200).json({ message: "Reset instructions sent to your email" });

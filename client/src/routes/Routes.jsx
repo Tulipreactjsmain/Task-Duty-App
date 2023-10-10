@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import CreateTask from "../pages/CreateTask";
 import UpdateTask from "../pages/UpdateTask";
 import ProtectedRoutes from "./ProtectedRoutes";
+import ResetPassword from "../components/ResetPassword";
 
 export default function Routes() {
   const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export default function Routes() {
         {
           path: "/auth/google/taskduty",
           element: <GoogleCallback />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPassword/>,
         },
       ],
     },

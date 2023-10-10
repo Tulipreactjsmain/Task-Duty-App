@@ -83,7 +83,7 @@
   color: #908d8d;
   font-weight: 400;
   background-color: white;
-  transform: translateY(-100%) translateX(10px); /* Adjust as needed */
+  transform: translateY(-100%) translateX(10px); 
 }
 
 .centered-placeholder::placeholder {
@@ -115,6 +115,16 @@
   .logo {
     height: 35px !important;
     max-width: 100%;
+  }
+
+  .form-label-top-left {
+    position: absolute;
+    top: 16px;
+    left: 27px;
+    color: #908d8d;
+    font-weight: 400;
+    background-color: white;
+    transform: translateY(-100%) translateX(10px); 
   }
 }
 

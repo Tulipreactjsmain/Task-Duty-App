@@ -47,6 +47,36 @@ export const getUser = async () => {
   return res;
 };
 
+export const updateUser = async (profile) => {
+  const res = await instance.post(
+    "/auth/update",
+    {
+      profile,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+  return res.data.user;
+};
+
+export const forgotPassword = async (email) => {
+  const res = await instance.post("/auth/forgot-password", {
+    email,
+  });
+
+  return res;
+};
+
+export const resetPassword = async (token, newPassword) => {
+  const res = await instance.post("/auth/reset-password", {
+    token,
+    newPassword,
+  });
+
+  return res;
+};
+
 export const loginWithGoogle = async () => {
   try {
     const res = await instance.get("/auth/google", { credentials: true });

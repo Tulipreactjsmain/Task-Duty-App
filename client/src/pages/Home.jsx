@@ -1,6 +1,6 @@
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "../config/store";
 import toast from "react-hot-toast";
 import LeaveEditPage from "../components/LeaveEditPage";
@@ -10,9 +10,11 @@ export default function Home() {
     userData,
     setShowConfirmationModal,
     showConfirmationModal,
-    setIsEditMode,
     isEditMode,
+    setIsEditMode,
   } = useStore();
+
+  // const location = useLocation();
 
   const handleClick = () => {
     if (!userData) {
@@ -20,15 +22,22 @@ export default function Home() {
     }
   };
 
-  const location = useLocation();
-  if (isEditMode && location.pathname === "/") {
-    setShowConfirmationModal(true);
-  }
+  // if (isEditMode && location.pathname === "/") {
+  //   setShowConfirmationModal(true);
+  // }
 
-  const handleConfirmLeave = () => {
-    setShowConfirmationModal(false);
-    setIsEditMode(false);
-  };
+  // const navigate = useNavigate();
+  // const from = location.state?.from;
+
+  // const handleCancelLeave = () => {
+  //   setShowConfirmationModal(false);
+  //   navigate(from, { replace: true });
+  // };
+
+  // const handleConfirmLeave = () => {
+  //   setShowConfirmationModal(false);
+  //   setIsEditMode(false);
+  // };
 
   return (
     <>
@@ -86,12 +95,7 @@ export default function Home() {
           </Carousel>
         </Col>
       </Row>
-      <LeaveEditPage
-        show={showConfirmationModal}
-        onClose={handleConfirmLeave}
-        onConfirm={handleConfirmLeave}
-        message="You have unsaved changes. Are you sure you want to leave?"
-      />
+      
     </>
   );
 }
