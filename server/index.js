@@ -34,6 +34,7 @@ app.use(
       httpOnly: true,
       secure: true,
       sameSite: "none",
+      domain: process.env.SITE_URL,
     },
     genid: (req) => {
       return uuidv4();
