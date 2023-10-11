@@ -1,5 +1,5 @@
 import React from "react";
-import { loginWithGoogle } from "../config/api"; // Import your API function
+import { loginWithGoogle } from "../config/api";
 import { useNavigate } from "react-router-dom";
 
 const SignInWithGoogle = () => {

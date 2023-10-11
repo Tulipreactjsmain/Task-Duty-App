@@ -10,11 +10,7 @@ import {
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import registerOptions from "../utils/formValidations.js";
-import {
-  loginUser,
-  registerUser,
-  forgotPassword,
-} from "../config/api";
+import { loginUser, registerUser, forgotPassword } from "../config/api";
 import { useStore } from "../config/store.jsx";
 
 export default function LoginModal() {
@@ -53,6 +49,8 @@ export default function LoginModal() {
   const onSubmitHandler = async ({ username, email, password }) => {
     setLoading(true);
     try {
+      let userDataResponse;
+  
       if (resetPasswordMode) {
         await forgotPassword(email);
         toast.success("Reset instructions sent to your email");
@@ -60,12 +58,9 @@ export default function LoginModal() {
       } else {
         if (isSignup) {
           const res = await registerUser(username, email, password);
-
+  
           if (res.status === 201) {
-            const userDataResponse = await fetchUserData();
-            if (userDataResponse) {
-              setUserData(userDataResponse);
-            }
+            userDataResponse = await fetchUserData();
             toast.success("Registration Successful");
             navigate(from, { replace: true });
             handleClose();
@@ -73,15 +68,15 @@ export default function LoginModal() {
         } else {
           const res = await loginUser(username, password);
           if (res.status === 200) {
-            const userDataResponse = await fetchUserData();
-            if (userDataResponse) {
-              setUserData(userDataResponse);
-            }
+            userDataResponse = await fetchUserData();
             toast.success("Login Successful");
             navigate(from, { replace: true });
             handleClose();
           }
         }
+      }
+      if (userDataResponse) {
+        setUserData(userDataResponse);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -89,6 +84,7 @@ export default function LoginModal() {
       setLoading(false);
     }
   };
+  
 
   return (
     <>
@@ -232,12 +228,11 @@ export default function LoginModal() {
                 )}
               </Button>
               {!resetPasswordMode &&
-                !isSignup && ( // Display "Forgot Password?" link only in login mode
+                !isSignup && ( 
                   <p
                     className="text-secondary-subtle textHover mb-2"
                     type="button"
                     onClick={switchToResetPasswordMode}
-                    c
                   >
                     <span>Forgot password? </span>
                   </p>

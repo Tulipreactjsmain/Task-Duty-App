@@ -114,7 +114,7 @@ export default function Tasks() {
 
                               <div className="d-flex justify-content-between gap-3 align-items-center">
                                 <Button
-                                  className="color text-center border-0 hover"
+                                  className="color text-center border-0 hover d-flex justify-content-center gap-2 align-items-center"
                                   onClick={() =>
                                     handleUpdateAndNavigate(task._id)
                                   }
@@ -123,11 +123,11 @@ export default function Tasks() {
                                   <span className="text-white">Edit</span>
                                 </Button>
                                 <Button
-                                  className="bg-body defaultColor text-center textHover buttonBorder"
+                                  className="bg-body defaultColor text-center textHover buttonBorder d-flex justify-content-center gap-2 align-items-center"
                                   onClick={() => handleDeleteTask(task._id)}
                                 >
                                   <RiDeleteBinLine />
-                                  <span>Delete</span>
+                                  <span >Delete</span>
                                 </Button>
                               </div>
                             </div>

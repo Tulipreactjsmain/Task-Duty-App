@@ -40,7 +40,6 @@ export default function Settings({ show, onHide }) {
     }
   };
 
-  console.log("userData", userData);
   return (
     <>
       {loading ? (

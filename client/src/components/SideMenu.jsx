@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useStore } from "../config/store";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { NavLink } from "react-router-dom";
-import { CgProfile } from "react-icons/cg";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlinePoweroff } from "react-icons/ai";
 import Settings from "./Settings";
@@ -19,7 +17,7 @@ export default function SideMenu({ name, ...props }) {
   };
 
   const handleShow = () => setShow(true);
-  
+
   const handleSettingsClick = () => {
     setShowSettingsModal(true);
   };

@@ -5,10 +5,9 @@ import { logOutUser } from "./api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { getSingleTask } from "./api";
-import { useLocation } from "react-router-dom";
 
 const Context = createContext();
-let initialUser = {};
+let initialUser = null;
 
 export const StateContext = ({ children }) => {
   const [userData, setUserData] = useState(initialUser);
@@ -21,18 +20,20 @@ export const StateContext = ({ children }) => {
   useEffect(() => {
     async function getUserData() {
       setLoading(true);
-      try {
-        const data = await fetchUserData();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false);
+      const isAuthenticated = !!!Cookies.get("TaskDuty.cookie");
+      if (isAuthenticated) {
+        try {
+          const data = await fetchUserData();
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
       }
+      setLoading(false);
     }
-
     getUserData();
   }, []);
+
   if (loading) {
     return <Loader />;
   }
@@ -83,7 +84,7 @@ export const StateContext = ({ children }) => {
         showSettingsModal,
         setShowSettingsModal,
         loading,
-        setLoading
+        setLoading,
       }}
     >
       {children}

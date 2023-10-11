@@ -1,20 +1,13 @@
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useStore } from "../config/store";
 import toast from "react-hot-toast";
-import LeaveEditPage from "../components/LeaveEditPage";
 
 export default function Home() {
   const {
     userData,
-    setShowConfirmationModal,
-    showConfirmationModal,
-    isEditMode,
-    setIsEditMode,
   } = useStore();
-
-  // const location = useLocation();
 
   const handleClick = () => {
     if (!userData) {
@@ -22,22 +15,6 @@ export default function Home() {
     }
   };
 
-  // if (isEditMode && location.pathname === "/") {
-  //   setShowConfirmationModal(true);
-  // }
-
-  // const navigate = useNavigate();
-  // const from = location.state?.from;
-
-  // const handleCancelLeave = () => {
-  //   setShowConfirmationModal(false);
-  //   navigate(from, { replace: true });
-  // };
-
-  // const handleConfirmLeave = () => {
-  //   setShowConfirmationModal(false);
-  //   setIsEditMode(false);
-  // };
 
   return (
     <>

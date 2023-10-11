@@ -1,11 +1,9 @@
 import { useStore } from "../config/store";
 import { useEffect } from "react";
 import CreateTask from "./CreateTask";
-import { useNavigate } from "react-router-dom";
 
 export default function UpdateTask() {
-  const { selectedTask, isEditMode, setIsEditMode, userData } = useStore();
-  const navigate = useNavigate()
+  const { selectedTask,setIsEditMode, userData } = useStore();
 
   useEffect(() => {
     setIsEditMode(true);
@@ -19,7 +17,6 @@ export default function UpdateTask() {
         </>
       ) : (
         <>{location.replace(`/${userData.username}/tasks`)}</>
-        // <>{navigate(`/${userData.username}/tasks`)}</>
       )}
     </>
   );

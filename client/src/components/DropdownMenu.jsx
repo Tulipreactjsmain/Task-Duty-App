@@ -1,53 +1,66 @@
-import { Dropdown, Menu } from "antd";
-import { Image } from "react-bootstrap";
+import React, { useState } from "react";
 import { useStore } from "../config/store";
 import Settings from "./Settings";
+import "../DropdownMenu.css";
 
 const DropdownMenu = ({ userData }) => {
   const { handleLogout, setShowSettingsModal, showSettingsModal } = useStore();
 
-  const handleClose = () => setShowSettingsModal(false);
-  const handleShow = () => setShowSettingsModal(true);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const handleMenuClick = ({ key }) => {
-    if (key === "logout") {
-      handleLogout();
-    } else if (key === "settings") {
-      handleShow();
-    }
+  const handleClose = () => {
+    setShowSettingsModal(false);
+    setIsMenuVisible(false);
   };
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="settings">Settings</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="logout">Logout</Menu.Item>
-    </Menu>
-  );
+  const handleShow = () => {
+    setShowSettingsModal(true);
+    setIsMenuVisible(false);
+  };
+
+  const handleMouseEnter = () => {
+    setIsMenuVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMenuVisible(false);
+  };
+
+  const handleLogoutClick = () => {
+    handleLogout();
+    setIsMenuVisible(false);
+  };
 
   return (
-    <>
-      <Dropdown
-        overlay={menu}
-        trigger={["hover"]}
-        className="d-flex d-none d-lg-block d-md-block justify-content-center text-danger-emphasis align-items-center"
-      >
-        <div>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            <Image
-              roundedCircle
-              style={{
-                width: "50px",
-                height: "50px",
-                objectFit: "cover",
-              }}
-              src={userData?.profileImg}
-            />
-          </a>
+    <div
+      className="dropdown-menu-container d-flex d-none d-lg-block d-md-block"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="profile-image">
+        <img
+          className="rounded-circle"
+          style={{
+            width: "50px",
+            height: "50px",
+            objectFit: "cover",
+          }}
+          src={userData?.profileImg}
+          alt="User Profile"
+          onClick={handleMouseEnter}
+        />
+      </div>
+      {isMenuVisible && (
+        <div className="dropdown-menu" style={{ fontSize: "14px" }}>
+          <ul>
+            <li onClick={handleShow}>Settings</li>
+            <hr className="p-0 m-0" style={{ color: "#ccc" }} />
+            <li onClick={handleLogoutClick}>Logout</li>
+          </ul>
         </div>
-      </Dropdown>
+      )}
       <Settings show={showSettingsModal} onHide={handleClose} />
-    </>
+    </div>
   );
 };
 

@@ -98,7 +98,7 @@ export const updateUser = async (req, res) => {
       { new: true }
     );
 
-    console.log("Updated User:", updatedUser);
+  
     if (updatedUser) {
       const user = {
         _id: updatedUser._id,
@@ -113,7 +113,6 @@ export const updateUser = async (req, res) => {
       res.status(404).json({ error: "User not found" });
     }
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -1,5 +1,4 @@
 import {
-  getUserTasks,
   loginWithGoogle,
   retrieveGoogleUser,
 } from "../config/api";
