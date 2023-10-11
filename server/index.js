@@ -8,9 +8,16 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import passport from "./config/passportConfig.js";
+import MongoStore from "connect-mongo"; 
+import mongoose from "mongoose";
 
+config();
 const allowedOrigins = ["http://localhost:5173", process.env.SITE_URL];
-
+const mongoStore = MongoStore.create({
+  mongoUrl: process.env.MONGO_URI, 
+  collection: "sessions", 
+  mongooseConnection: mongoose.connection, 
+});
 const app = express();
 app.use(json());
 app.use(
@@ -19,22 +26,23 @@ app.use(
     credentials: true,
   })
 );
-config();
 app.disable("x-powered-by");
 
 app.use(cookieParser());
+
 app.use(
   session({
     name: "TaskDuty.cookie",
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+    store: mongoStore,
     cookie: {
       maxAge: 86400000,
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      domain: process.env.SITE_URL,
+      // secure: true,
+      // sameSite: "none",
+      // domain: process.env.SITE_URL,
     },
     genid: (req) => {
       return uuidv4();
