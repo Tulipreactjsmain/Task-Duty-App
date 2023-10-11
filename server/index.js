@@ -32,8 +32,8 @@ app.use(
     cookie: {
       maxAge: 86400000,
       httpOnly: true,
-      // secure: true,
-      // sameSite: "none",
+      secure: true,
+      sameSite: "none",
     },
     genid: (req) => {
       return uuidv4();
