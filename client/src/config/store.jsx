@@ -20,7 +20,7 @@ export const StateContext = ({ children }) => {
   useEffect(() => {
     async function getUserData() {
       setLoading(true);
-      const isAuthenticated = !!!Cookies.get("TaskDuty.cookie");
+      const isAuthenticated = !!Cookies.get("TaskDuty.cookie");
       if (isAuthenticated) {
         try {
           const data = await fetchUserData();
