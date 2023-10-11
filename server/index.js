@@ -9,11 +9,13 @@ import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import passport from "./config/passportConfig.js";
 
+const allowedOrigins = ["http://localhost:5173", process.env.SITE_URL];
+
 const app = express();
 app.use(json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -23,15 +25,15 @@ app.disable("x-powered-by");
 app.use(cookieParser());
 app.use(
   session({
-    name: 'TaskDuty.cookie',
+    name: "TaskDuty.cookie",
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
       maxAge: 86400000,
       httpOnly: true,
-      // secure: false,
-      // sameSite: "none",
+      secure: true,
+      sameSite: "none",
     },
     genid: (req) => {
       return uuidv4();
