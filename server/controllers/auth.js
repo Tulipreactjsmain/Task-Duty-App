@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { customError } from "../config/error.js";
 import sendResetPasswordEmail from "../config/email.js";
 import { generateRandomToken } from "../config/token.js";
+import logger from "../config/loggingFile.js";
 
 export const registerUser = async (req, res, next) => {
   res.status(200);
@@ -35,6 +36,7 @@ export const registerUser = async (req, res, next) => {
     };
 
     req.session.user = user;
+    logger.info('Session cookie set:', req.session);
     res.status(201).json({ user, msg: "User registration successfull" });
   } catch (error) {
     res.status(500).json(error);
@@ -107,6 +109,7 @@ export const updateUser = async (req, res) => {
         profileImg: updatedUser.profileImg,
       };
       req.session.user = user;
+      logger.info('Session cookie set:', req.session);
 
       res.status(201).json({ user, msg: "User profile updated" });
     } else {

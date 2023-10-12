@@ -8,17 +8,18 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import passport from "./config/passportConfig.js";
-import MongoStore from "connect-mongo"; 
+import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 
 config();
+const app = express();
 const allowedOrigins = ["http://localhost:5173", process.env.SITE_URL];
 const mongoStore = MongoStore.create({
-  mongoUrl: process.env.MONGO_URI, 
-  collection: "sessions", 
-  mongooseConnection: mongoose.connection, 
+  mongoUrl: process.env.MONGO_URI,
+  collection: "sessions",
+  mongooseConnection: mongoose.connection,
 });
-const app = express();
+
 app.use(json());
 app.use(
   cors({
@@ -26,10 +27,10 @@ app.use(
     credentials: true,
   })
 );
+
 app.disable("x-powered-by");
-
 app.use(cookieParser());
-
+app.set("trust proxy", 1);
 app.use(
   session({
     name: "TaskDuty.cookie",
