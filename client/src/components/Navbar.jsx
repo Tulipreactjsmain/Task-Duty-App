@@ -44,7 +44,7 @@ export default function Navbar() {
         >
           <Button
             onClick={handleClick}
-            className="d-flex gap-2 justify-content-center bg-body border-0 align-items-center "
+            className="d-flex gap-2 p-0 justify-content-center bg-body border-0 align-items-center "
           >
             <Image
               className="logo"

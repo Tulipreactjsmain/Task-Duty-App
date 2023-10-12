@@ -126,6 +126,10 @@
     background-color: white;
     transform: translateY(-100%) translateX(10px); 
   }
+
+  .bi-person-circle {
+    font-size: 30px;
+  }
 }
 
 .customPadding {
@@ -146,6 +150,10 @@
     padding-left: 50px !important;
     padding-right: 50px !important;
   }
+
+  .bi-person-circle {
+    font-size: 34px;
+  }
 }
 
 /*for larger screens (e.g., desktops) */
@@ -165,5 +173,9 @@
   .customPadding {
     padding-left: 80px !important;
     padding-right: 80px !important;
+  }
+
+  .bi-person-circle {
+    font-size: 30px;
   }
 }

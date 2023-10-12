@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 export default function Settings({ show, onHide }) {
   const [isCameraIconVisible, setIsCameraIconVisible] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [newImgUrl, setNewImgUrl] = useState("");
   const { userData, setUserData, setShowSettingsModal, loading, setLoading } =
     useStore();
   const {

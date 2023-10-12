@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 
 config();
 const app = express();
-// const allowedOrigins = ["https://task-duty-app.vercel.app", process.env.SITE_URL];
+const allowedOrigins = ["http://localhost:5173", process.env.SITE_URL];
 const mongoStore = MongoStore.create({
   mongoUrl: process.env.MONGO_URI,
   collection: "sessions",
@@ -23,7 +23,7 @@ const mongoStore = MongoStore.create({
 app.use(json());
 app.use(
   cors({
-    origin: "https://task-duty-app.vercel.app",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -43,7 +43,6 @@ app.use(
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      // domain: "https://task-duty-app.vercel.app",
     },
     genid: (req) => {
       return uuidv4();
