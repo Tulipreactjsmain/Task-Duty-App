@@ -43,7 +43,7 @@ app.use(
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      domain: "https://task-duty-app.vercel.app",
+      // domain: "https://task-duty-app.vercel.app",
     },
     genid: (req) => {
       return uuidv4();
