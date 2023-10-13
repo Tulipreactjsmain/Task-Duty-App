@@ -7,6 +7,7 @@ import UpdateTask from "../pages/UpdateTask";
 import ProtectedRoutes from "./ProtectedRoutes";
 import ResetPassword from "../components/ResetPassword";
 import RecoverPassword from "../pages/RecoverPassword";
+import LoginPage from "../pages/LoginPage";
 
 export default function Routes() {
   const router = createBrowserRouter([
@@ -54,6 +55,10 @@ export default function Routes() {
         {
           path: "/reset-password",
           element: <ResetPassword />,
+        },
+        {
+          path: "/google",
+          element: <LoginPage/>,
         },
       ],
     },
