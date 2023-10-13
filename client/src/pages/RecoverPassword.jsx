@@ -22,7 +22,6 @@ export default function RecoverPassword() {
     try {
       if (resetPasswordMode) {
         const res = await forgotPassword(email);
-        console.log(("passres", res));
       }
     } catch (error) {
       toast.error(error.response.data.message);

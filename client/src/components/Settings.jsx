@@ -34,7 +34,6 @@ export default function Settings({ show, onHide }) {
       const handleImgUpload = async () => {
         try {
           const upload = await uploadToCloudinary(imgFile);
-          console.log("cloud", upload);
           const updatedProfileImg = upload.data.secure_url;
           setNewImgUrl(updatedProfileImg);
           const newUserImg = {
@@ -52,8 +51,6 @@ export default function Settings({ show, onHide }) {
       handleImgUpload();
     }
   }, [imgFile]);
-  console.log("imgfile", imgFile);
-
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -63,7 +60,6 @@ export default function Settings({ show, onHide }) {
         password: data.password,
         profileImg: newImgUrl,
       };
-      console.log("Data", profile);
 
       const updatedUserData = await updateUser(profile);
       setUserData(updatedUserData);
