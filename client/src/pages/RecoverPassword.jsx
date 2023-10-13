@@ -34,16 +34,17 @@ export default function RecoverPassword() {
 
   return (
     <div className="customPadding pt-5">
-      <NavLink to="/" className="p-0 m-0 border-0 bg-body" >
-        <IoIosArrowBack className="fs-1 text-black" /> <span className="text-black">Go back</span>
+      <NavLink to="/" className="p-0 m-0 border-0 bg-body">
+        <IoIosArrowBack className="fs-1 text-black" />{" "}
+        <span className="text-black">Go back</span>
       </NavLink>
       <div className="pt-5 d-flex flex-column align-items-center justify-content-center">
-        <h1 className="fs-3">Verify email</h1>
+        {resetPasswordMode && <h1 className="fs-3">Verify email</h1>}
         {resetPasswordMode ? (
           <form
             className="d-flex flex-column align-items-center justify-content-center"
             onSubmit={handleSubmit(onSubmitHandler)}
-            style={{width:"300px"}}
+            style={{ width: "300px" }}
           >
             <div className="mb-2 inputRegBox">
               <input
@@ -77,7 +78,7 @@ export default function RecoverPassword() {
           </form>
         ) : (
           <>
-            <div className="mb-2 inputRegBox">
+            <div className="mb-2 inputRegBox text-center">
               Reset instructions sent to your Email.
             </div>
           </>
