@@ -83,7 +83,7 @@
   color: #908d8d;
   font-weight: 400;
   background-color: white;
-  transform: translateY(-100%) translateX(10px); 
+  transform: translateY(-100%) translateX(10px);
 }
 
 .centered-placeholder::placeholder {
@@ -107,6 +107,14 @@
   padding-left: 10px;
 }
 
+.bg-image {
+  background-image: url("https://res.cloudinary.com/techbro/image/upload/v1697149138/TaskDuty%20UserImages/gvnkixrnnc8t1su2fj0t.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+}
+
 /* for smaller screens (e.g., mobile devices) */
 @media screen and (max-width: 767px) {
   .logoName {
@@ -124,7 +132,7 @@
     color: #908d8d;
     font-weight: 400;
     background-color: white;
-    transform: translateY(-100%) translateX(10px); 
+    transform: translateY(-100%) translateX(10px);
   }
 
   .bi-person-circle {

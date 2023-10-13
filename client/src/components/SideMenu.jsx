@@ -35,7 +35,7 @@ export default function SideMenu({ name, ...props }) {
         onHide={handleClose}
         placement="end"
         {...props}
-        style={{}}
+        style={{width:"100%"}}
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Manage</Offcanvas.Title>

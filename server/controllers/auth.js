@@ -36,7 +36,6 @@ export const registerUser = async (req, res, next) => {
     };
 
     req.session.user = user;
-    logger.info('Session cookie set:', req.session);
     res.status(201).json({ user, msg: "User registration successfull" });
   } catch (error) {
     res.status(500).json(error);

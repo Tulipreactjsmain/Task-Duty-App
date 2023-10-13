@@ -1,4 +1,5 @@
-import { instance } from "./connect";
+import { instance, CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_URL } from "./connect";
+import axios from "axios";
 
 export const registerUser = async (username, email, password) => {
   const res = await instance.post(
@@ -139,4 +140,13 @@ export const deleteTask = async (taskId) => {
     withCredentials: true,
   });
   return res;
+};
+
+
+export const uploadToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  const data = await axios.post(CLOUDINARY_URL, formData);
+  return data;
 };

@@ -34,9 +34,9 @@ export const StateContext = ({ children }) => {
     getUserData();
   }, []);
 
-  if (loading) {
-    return <Loader title={"Welcome to Task Duty App"}/>;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   const clearUserCookies = () => {
     Cookies.remove("TaskDuty.cookie", { path: "/" });

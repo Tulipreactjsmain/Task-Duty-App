@@ -21,7 +21,7 @@ export default function Home() {
       <Row className="d-flex justify-content-between w-100 customPadding gap-5 align-items-center pt-5">
         <Col xs={12} lg={6} style={{ maxWidth: "535px" }}>
           <h1>
-            Manage your Tasks On
+            Manage your Tasks<br /> On 
             <span style={{ color: "#974FD0" }}>TaskDuty</span>
           </h1>
           <p>
