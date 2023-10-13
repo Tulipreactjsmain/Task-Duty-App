@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { fetchUserData } from "../hooks/userService.js";
 import {
@@ -18,15 +18,9 @@ export default function LoginModal() {
   const [isSignup, setisSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [passwordShown, setpasswordShown] = useState(false);
-  const [resetPasswordMode, setResetPasswordMode] = useState(false);
 
   const switchMode = () => {
     setisSignup(!isSignup);
-    setResetPasswordMode(false);
-  };
-
-  const switchToResetPasswordMode = () => {
-    setResetPasswordMode(true);
   };
 
   const {
@@ -50,31 +44,26 @@ export default function LoginModal() {
     setLoading(true);
     try {
       let userDataResponse;
-  
-      if (resetPasswordMode) {
-        await forgotPassword(email);
-        toast.success("Reset instructions sent to your email");
-        handleClose();
+
+      if (isSignup) {
+        const res = await registerUser(username, email, password);
+
+        if (res.status === 201) {
+          userDataResponse = await fetchUserData();
+          toast.success("Registration Successful");
+          navigate(from, { replace: true });
+          handleClose();
+        }
       } else {
-        if (isSignup) {
-          const res = await registerUser(username, email, password);
-  
-          if (res.status === 201) {
-            userDataResponse = await fetchUserData();
-            toast.success("Registration Successful");
-            navigate(from, { replace: true });
-            handleClose();
-          }
-        } else {
-          const res = await loginUser(username, password);
-          if (res.status === 200) {
-            userDataResponse = await fetchUserData();
-            toast.success("Login Successful");
-            navigate(from, { replace: true });
-            handleClose();
-          }
+        const res = await loginUser(username, password);
+        if (res.status === 200) {
+          userDataResponse = await fetchUserData();
+          toast.success("Login Successful");
+          navigate(from, { replace: true });
+          handleClose();
         }
       }
+
       if (userDataResponse) {
         setUserData(userDataResponse);
       }
@@ -84,7 +73,6 @@ export default function LoginModal() {
       setLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -109,78 +97,53 @@ export default function LoginModal() {
           </div>
           <div className="mx-5">
             <h1 className="text-center">
-              {isSignup
-                ? "Create account"
-                : resetPasswordMode
-                ? "Reset Password"
-                : "Login"}
+              {isSignup ? "Create account" : "Login"}
             </h1>
             <form
               className="d-flex flex-column align-items-center w-100"
               onSubmit={handleSubmit(onSubmitHandler)}
             >
-              {resetPasswordMode ? (
+              <>
                 <div className="mb-2 inputRegBox">
                   <input
                     type="text"
-                    placeholder="Email"
-                    id="email"
+                    placeholder="Username"
+                    id="username"
                     autoFocus
                     className="w-100 mb-0 inputReg"
-                    {...register("email", registerOptions.email)}
+                    {...register("username", registerOptions.username)}
                   />
-                  {errors?.email?.message && (
+                  {errors?.username?.message && (
                     <span
                       className="text-danger fontWeight-400 opacity-75"
                       style={{ fontSize: "14px" }}
                     >
-                      {errors.email.message}
+                      {errors.username.message}
                     </span>
                   )}
                 </div>
-              ) : (
-                <>
+                {isSignup && (
                   <div className="mb-2 inputRegBox">
                     <input
                       type="text"
-                      placeholder="Username"
-                      id="username"
-                      autoFocus
+                      placeholder="Email"
+                      id="email"
                       className="w-100 mb-0 inputReg"
-                      {...register("username", registerOptions.username)}
+                      {...register("email", registerOptions.email)}
                     />
-                    {errors?.username?.message && (
+                    {errors?.email?.message && (
                       <span
                         className="text-danger fontWeight-400 opacity-75"
                         style={{ fontSize: "14px" }}
                       >
-                        {errors.username.message}
+                        {errors.email.message}
                       </span>
                     )}
                   </div>
-                  {isSignup && (
-                    <div className="mb-2 inputRegBox">
-                      <input
-                        type="text"
-                        placeholder="Email"
-                        id="email"
-                        className="w-100 mb-0 inputReg"
-                        {...register("email", registerOptions.email)}
-                      />
-                      {errors?.email?.message && (
-                        <span
-                          className="text-danger fontWeight-400 opacity-75"
-                          style={{ fontSize: "14px" }}
-                        >
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </>
-              )}
+                )}
+              </>
 
-              {!resetPasswordMode && (
+              <>
                 <div className=" mb-2 inputRegBox position-relative">
                   <input
                     type={passwordShown ? "text" : "password"}
@@ -203,7 +166,18 @@ export default function LoginModal() {
                     />
                   )}
                 </div>
-              )}
+                {!isSignup && (
+                  <NavLink
+                    className="text-start w-100 fs-6 opacity-75 text-black"
+                    to="/recover-password"
+                    type="button"
+                    onClick={handleClose}
+                  >
+                    Forgot password?
+                  </NavLink>
+                )}
+              </>
+
               {errors?.password?.message && (
                 <span
                   className="text-danger fontWeight-400 opacity-75 mb-1 inputRegBox"
@@ -221,22 +195,10 @@ export default function LoginModal() {
                   <Spinner animation="border" size="sm"></Spinner>
                 ) : isSignup ? (
                   "Create"
-                ) : resetPasswordMode ? (
-                  "Reset Password"
                 ) : (
                   "Sign in"
                 )}
               </Button>
-              {!resetPasswordMode &&
-                !isSignup && ( 
-                  <p
-                    className="text-secondary-subtle textHover mb-2"
-                    type="button"
-                    onClick={switchToResetPasswordMode}
-                  >
-                    <span>Forgot password? </span>
-                  </p>
-                )}
 
               {isSignup ? (
                 <p className="text-center" type="button" onClick={switchMode}>

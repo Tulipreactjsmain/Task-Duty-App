@@ -6,6 +6,7 @@ import CreateTask from "../pages/CreateTask";
 import UpdateTask from "../pages/UpdateTask";
 import ProtectedRoutes from "./ProtectedRoutes";
 import ResetPassword from "../components/ResetPassword";
+import RecoverPassword from "../pages/RecoverPassword";
 
 export default function Routes() {
   const router = createBrowserRouter([
@@ -47,8 +48,12 @@ export default function Routes() {
           element: <GoogleCallback />,
         },
         {
+          path: "/recover-password",
+          element: <RecoverPassword/>,
+        },
+        {
           path: "/reset-password",
-          element: <ResetPassword/>,
+          element: <ResetPassword />,
         },
       ],
     },
