@@ -24,7 +24,6 @@ export default function Home() {
             Manage your Tasks<br /> On 
             <span style={{ color: "#974FD0" }}>TaskDuty</span>
           </h1>
-          <NavLink to="/google">Google</NavLink>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non tellus,
             sapien, morbi ante nunc euismod ac felis ac. Massa et, at platea
