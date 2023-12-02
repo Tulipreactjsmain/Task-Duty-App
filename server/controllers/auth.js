@@ -6,7 +6,6 @@ import { generateRandomToken } from "../config/token.js";
 import logger from "../config/loggingFile.js";
 
 export const registerUser = async (req, res, next) => {
-  res.status(200);
   const { username, email, password, profileImg } = req.body;
   try {
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
